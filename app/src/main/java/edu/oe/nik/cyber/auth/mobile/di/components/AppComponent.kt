@@ -20,5 +20,5 @@ import javax.inject.Singleton
 ])
 interface AppComponent : AndroidInjector<CyberSecAuthApplication> {
     @Component.Builder
-    abstract class Factory : AndroidInjector.Builder<CyberSecAuthApplication>()
+    abstract class Builder : AndroidInjector.Builder<CyberSecAuthApplication>()
 }
