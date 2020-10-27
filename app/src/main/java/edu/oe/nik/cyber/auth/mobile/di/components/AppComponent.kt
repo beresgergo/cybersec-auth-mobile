@@ -5,9 +5,9 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import edu.oe.nik.cyber.auth.mobile.CyberSecAuthApplication
 import edu.oe.nik.cyber.auth.mobile.di.modules.AppModule
+import edu.oe.nik.cyber.auth.mobile.di.modules.network.RetrofitModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.ui.ActivityModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.ui.ViewModelModule
-import edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity.MainActivityModule
 import javax.inject.Singleton
 
 @Singleton
@@ -15,7 +15,8 @@ import javax.inject.Singleton
     AndroidSupportInjectionModule::class,
     AppModule::class,
     ActivityModule::class,
-    ViewModelModule::class
+    ViewModelModule::class,
+    RetrofitModule::class
 ])
 interface AppComponent : AndroidInjector<CyberSecAuthApplication> {
     @Component.Builder

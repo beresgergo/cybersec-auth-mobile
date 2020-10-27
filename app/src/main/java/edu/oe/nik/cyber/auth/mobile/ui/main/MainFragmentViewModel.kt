@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
 class MainFragmentViewModel @Inject constructor() : ViewModel() {
-    val hello: String = "Hello from the view model"
+    val hello: String = "Hello from the view model, again"
 }
