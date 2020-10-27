@@ -11,7 +11,7 @@ interface RegistrationApi {
     @GET("/user/{username}")
     fun startRegistration(
         @Path("username") username: String
-    ) : InitiateRegistrationResponse
+    ) : Call<InitiateRegistrationResponse>
 
     @Headers(NetworkConstants.CONTENT_TYPE_JSON)
     @POST("/user/{username}/totpSecret")
