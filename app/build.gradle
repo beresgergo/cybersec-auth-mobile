@@ -137,6 +137,10 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // OK HTTP
-    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    implementation "dev.turingcomplete:kotlin-onetimepassword:$otpLibVersion"
+
+    implementation "commons-codec:commons-codec:$commonsCodecVersion"
 }

@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import javax.inject.Inject
 
 class CredentialStorage @Inject constructor(
-    private val insecureSharedPreferences: SharedPreferences,
-    private val secureSharedPreferences: SharedPreferences
+    val insecureSharedPreferences: SharedPreferences,
+    val secureSharedPreferences: SharedPreferences
 ){
 
     companion object SharedPrefKeys {

@@ -1,6 +1,7 @@
 package edu.oe.nik.cyber.auth.mobile.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.MainFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainFragment @Inject constructor() : BaseFragment() {
@@ -27,6 +29,7 @@ class MainFragment @Inject constructor() : BaseFragment() {
 
     override fun onResume() {
         viewModel.updateHello()
+        viewModel.generateTotpSecret()
         super.onResume()
     }
 
