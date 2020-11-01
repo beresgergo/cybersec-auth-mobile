@@ -1,0 +1,115 @@
+package edu.oe.nik.cyber.auth.mobile.storage
+
+import android.content.SharedPreferences
+import org.junit.Assert.*
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnitRunner
+
+@RunWith(MockitoJUnitRunner::class)
+class CredentialStorageTest {
+
+    @Mock
+    private lateinit var mockedInsecureSharedPreferences: SharedPreferences
+
+    @Mock
+    private lateinit var mockedSecureSharedPreferences: SharedPreferences
+
+    @Mock
+    private lateinit var mockedSharedPreferencesEditor: SharedPreferences.Editor
+
+    private lateinit var sut: CredentialStorage
+
+    @Test
+    fun jwtShouldBeStoredInBothPreferences() {
+        `when`(mockedInsecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSharedPreferencesEditor
+            .putString(any(String::class.java), any(String::class.java))
+            ).thenReturn(mockedSharedPreferencesEditor)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        sut.jwt = "input"
+
+        verify(mockedSharedPreferencesEditor, times(2)).putString(any(String::class.java), any(String::class.java))
+        verify(mockedSharedPreferencesEditor, times(2)).apply()
+        verify(mockedInsecureSharedPreferences, times(1)).edit()
+        verify(mockedSecureSharedPreferences, times(1)).edit()
+    }
+
+    @Test
+    fun jwtShouldBeRetrievedOnlyFromTheInsecureStorage() {
+        val result = "insecureResult"
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.JWT_KEY), any(String::class.java)
+        )).thenReturn(result)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        assertTrue(sut.jwt === result)
+        verify(mockedSecureSharedPreferences, times(0))
+            .getString(any(String::class.java), any(String::class.java))
+    }
+
+    @Test
+    fun totpSecretTypeShouldBeStoredInBothPreferences() {
+        `when`(mockedInsecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSharedPreferencesEditor
+            .putString(any(String::class.java), any(String::class.java))
+        ).thenReturn(mockedSharedPreferencesEditor)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        sut.totpSecret = "input"
+
+        verify(mockedSharedPreferencesEditor, times(2)).putString(any(String::class.java), any(String::class.java))
+        verify(mockedSharedPreferencesEditor, times(2)).apply()
+        verify(mockedInsecureSharedPreferences, times(1)).edit()
+        verify(mockedSecureSharedPreferences, times(1)).edit()
+    }
+
+    @Test
+    fun totpSecretShouldBeRetrievedOnlyFromTheInsecureStorage() {
+        val result = "insecureResult"
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.TOTP_SECRET), any(String::class.java)
+        )).thenReturn(result)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        assertTrue(sut.totpSecret === result)
+        verify(mockedSecureSharedPreferences, times(0))
+            .getString(any(String::class.java), any(String::class.java))
+    }
+
+    @Test
+    fun preferredAuthTypeShouldBeStoredInBothPreferences() {
+        `when`(mockedInsecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSharedPreferencesEditor
+            .putString(any(String::class.java), any(String::class.java))
+        ).thenReturn(mockedSharedPreferencesEditor)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        sut.preferredAuthType = "input"
+
+        verify(mockedSharedPreferencesEditor, times(2)).putString(any(String::class.java), any(String::class.java))
+        verify(mockedSharedPreferencesEditor, times(2)).apply()
+        verify(mockedInsecureSharedPreferences, times(1)).edit()
+        verify(mockedSecureSharedPreferences, times(1)).edit()
+    }
+
+    @Test
+    fun preferredAuthTypeShouldBeRetrievedOnlyFromTheInsecureStorage() {
+        val result = "insecureResult"
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.PREFERRED_AUTH_TYPE), any(String::class.java)
+        )).thenReturn(result)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        assertTrue(sut.preferredAuthType === result)
+        verify(mockedSecureSharedPreferences, times(0))
+            .getString(any(String::class.java), any(String::class.java))
+    }
+
+}
