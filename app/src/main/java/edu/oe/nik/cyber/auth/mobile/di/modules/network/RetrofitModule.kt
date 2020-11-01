@@ -17,7 +17,7 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory() : GsonConverterFactory = GsonConverterFactory.create()
+    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
     @Singleton

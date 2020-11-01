@@ -47,6 +47,7 @@ android {
 dependencies {
 
     // App dependencies
+    implementation "androidx.security:security-crypto:$androidXVersion-rc03"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
     implementation "androidx.cardview:cardview:$cardVersion"
     implementation "com.google.android.material:material:$materialVersion"

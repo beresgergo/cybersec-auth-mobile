@@ -21,7 +21,13 @@ class MainFragment @Inject constructor() : BaseFragment() {
         val binding: MainFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
         return binding.root
+    }
+
+    override fun onResume() {
+        viewModel.updateHello()
+        super.onResume()
     }
 
 }
