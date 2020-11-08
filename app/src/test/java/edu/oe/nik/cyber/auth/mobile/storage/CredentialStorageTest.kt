@@ -23,6 +23,36 @@ class CredentialStorageTest {
     private lateinit var sut: CredentialStorage
 
     @Test
+    fun usernameShouldBeStoredInBothPreferences() {
+        `when`(mockedInsecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSharedPreferencesEditor
+            .putString(any(String::class.java), any(String::class.java))
+        ).thenReturn(mockedSharedPreferencesEditor)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        sut.username = "input"
+
+        verify(mockedSharedPreferencesEditor, times(2)).putString(any(String::class.java), any(String::class.java))
+        verify(mockedSharedPreferencesEditor, times(2)).apply()
+        verify(mockedInsecureSharedPreferences, times(1)).edit()
+        verify(mockedSecureSharedPreferences, times(1)).edit()
+    }
+
+    @Test
+    fun usernameShouldBeRetrievedOnlyFromTheInsecureStorage() {
+        val result = "insecureResult"
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.USERNAME), any(String::class.java)
+        )).thenReturn(result)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        assertTrue(sut.username === result)
+        verify(mockedSecureSharedPreferences, times(0))
+            .getString(any(String::class.java), any(String::class.java))
+    }
+
+    @Test
     fun jwtShouldBeStoredInBothPreferences() {
         `when`(mockedInsecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
         `when`(mockedSecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
