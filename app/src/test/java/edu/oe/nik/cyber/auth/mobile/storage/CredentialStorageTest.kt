@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
@@ -142,4 +143,64 @@ class CredentialStorageTest {
             .getString(any(String::class.java), any(String::class.java))
     }
 
+    @Test
+    fun clearStorageShouldWipeDataFromBothStorage() {
+        `when`(mockedInsecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+        `when`(mockedSecureSharedPreferences.edit()).thenReturn(mockedSharedPreferencesEditor)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        sut.clearStorage()
+
+        verify(mockedSharedPreferencesEditor, times(2)).apply()
+        verify(mockedSharedPreferencesEditor, times(2)).clear()
+    }
+
+    @Test
+    fun hasStoredCredentialShouldOnlyBeTrueIfAllFieldsHasProperValue() {
+        val name = "mockedName"
+        val jwt = "mockedJWT"
+        val totpSecret = "mockedTotpSecret"
+        val preferredAuthType = "mockedPreferredAuthType"
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.USERNAME), any(String::class.java))
+        ).thenReturn(name)
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.JWT_KEY), any(String::class.java))
+        ).thenReturn(jwt)
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.TOTP_SECRET), any(String::class.java))
+        ).thenReturn(totpSecret)
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.PREFERRED_AUTH_TYPE), any(String::class.java))
+        ).thenReturn(preferredAuthType)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        assertTrue(sut.hasStoredCredential())
+    }
+
+    @Test
+    fun hasStoredCredentialShouldBeFalseIfAnyFieldIsMissingValue() {
+        val name = "mockedName"
+        val totpSecret = "mockedTotpSecret"
+        val preferredAuthType = "mockedPreferredAuthType"
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.USERNAME), any(String::class.java))
+        ).thenReturn(name)
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.JWT_KEY), any(String::class.java))
+        ).thenReturn("")
+
+        `when`(mockedInsecureSharedPreferences.getString(
+            eq(CredentialStorage.TOTP_SECRET), any(String::class.java))
+        ).thenReturn(totpSecret)
+
+        sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
+        assertFalse(sut.hasStoredCredential())
+    }
 }

@@ -66,4 +66,20 @@ class CredentialStorage @Inject constructor(
                 apply()
             }
         }
+
+    fun clearStorage() {
+        with(insecureSharedPreferences.edit()) {
+            clear()
+            apply()
+        }
+
+        with(secureSharedPreferences.edit()) {
+            clear()
+            apply()
+        }
+    }
+
+    fun hasStoredCredential(): Boolean {
+        return username != "" && totpSecret != "" && jwt != "" && preferredAuthType != ""
+    }
 }
