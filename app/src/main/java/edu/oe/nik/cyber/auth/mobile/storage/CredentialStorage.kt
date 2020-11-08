@@ -54,15 +54,15 @@ class CredentialStorage @Inject constructor(
             }
         }
 
-    var preferredAuthType: String
-        get() = insecureSharedPreferences.getString(PREFERRED_AUTH_TYPE, "")
+    var preferredAuthType: PreferredAuthenticatioType
+        get() = PreferredAuthenticatioType.valueOf(insecureSharedPreferences.getString(PREFERRED_AUTH_TYPE, ""))
         set(value) {
             with(insecureSharedPreferences.edit()) {
-                putString(PREFERRED_AUTH_TYPE, value)
+                putString(PREFERRED_AUTH_TYPE, value.toString())
                 apply()
             }
             with(secureSharedPreferences.edit()) {
-                putString(PREFERRED_AUTH_TYPE, value)
+                putString(PREFERRED_AUTH_TYPE, value.toString())
                 apply()
             }
         }
@@ -80,6 +80,12 @@ class CredentialStorage @Inject constructor(
     }
 
     fun hasStoredCredential(): Boolean {
-        return username != "" && totpSecret != "" && jwt != "" && preferredAuthType != ""
+        return username != "" && totpSecret != "" && jwt != ""
     }
+}
+
+enum class PreferredAuthenticatioType {
+    MFA,
+    RSA,
+    TOTP
 }

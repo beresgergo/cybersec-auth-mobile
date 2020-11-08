@@ -122,7 +122,7 @@ class CredentialStorageTest {
         ).thenReturn(mockedSharedPreferencesEditor)
 
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
-        sut.preferredAuthType = "input"
+        sut.preferredAuthType = PreferredAuthenticatioType.MFA
 
         verify(mockedSharedPreferencesEditor, times(2)).putString(any(String::class.java), any(String::class.java))
         verify(mockedSharedPreferencesEditor, times(2)).apply()
@@ -132,13 +132,13 @@ class CredentialStorageTest {
 
     @Test
     fun preferredAuthTypeShouldBeRetrievedOnlyFromTheInsecureStorage() {
-        val result = "insecureResult"
+        val result = PreferredAuthenticatioType.MFA.toString()
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.PREFERRED_AUTH_TYPE), any(String::class.java)
         )).thenReturn(result)
 
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
-        assertTrue(sut.preferredAuthType === result)
+        assertTrue(sut.preferredAuthType == PreferredAuthenticatioType.MFA)
         verify(mockedSecureSharedPreferences, times(0))
             .getString(any(String::class.java), any(String::class.java))
     }
@@ -160,7 +160,6 @@ class CredentialStorageTest {
         val name = "mockedName"
         val jwt = "mockedJWT"
         val totpSecret = "mockedTotpSecret"
-        val preferredAuthType = "mockedPreferredAuthType"
 
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.USERNAME), any(String::class.java))
@@ -174,10 +173,6 @@ class CredentialStorageTest {
             eq(CredentialStorage.TOTP_SECRET), any(String::class.java))
         ).thenReturn(totpSecret)
 
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.PREFERRED_AUTH_TYPE), any(String::class.java))
-        ).thenReturn(preferredAuthType)
-
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
         assertTrue(sut.hasStoredCredential())
     }
@@ -186,7 +181,6 @@ class CredentialStorageTest {
     fun hasStoredCredentialShouldBeFalseIfAnyFieldIsMissingValue() {
         val name = "mockedName"
         val totpSecret = "mockedTotpSecret"
-        val preferredAuthType = "mockedPreferredAuthType"
 
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.USERNAME), any(String::class.java))
