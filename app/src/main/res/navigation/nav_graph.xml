@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="edu.oe.nik.cyber.auth.mobile.ui.main.MainFragment"
+        android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationFragment"
         android:label="Main Fragment" />
 </navigation>

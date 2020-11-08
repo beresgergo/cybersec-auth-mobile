@@ -1,4 +1,4 @@
-package edu.oe.nik.cyber.auth.mobile.ui.main
+package edu.oe.nik.cyber.auth.mobile.ui.registration.start
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ import java.security.SecureRandom
 
 import javax.inject.Inject
 
-class MainFragmentViewModel @Inject constructor() : ViewModel(){
+class StartRegistrationViewModel @Inject constructor() : ViewModel(){
 
     @Inject
     lateinit var registrationApi: RegistrationApi

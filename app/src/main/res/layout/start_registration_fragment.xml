@@ -20,7 +20,7 @@
         <import type="androidx.core.content.ContextCompat" />
         <variable
             name="viewModel"
-            type="edu.oe.nik.cyber.auth.mobile.ui.main.MainFragmentViewModel" />
+            type="edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationViewModel" />
     </data>
 
 

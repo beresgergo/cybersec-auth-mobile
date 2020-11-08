@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import edu.oe.nik.cyber.auth.mobile.ViewModelFactory
 import edu.oe.nik.cyber.auth.mobile.di.qualifiers.ViewModelKey
-import edu.oe.nik.cyber.auth.mobile.ui.main.MainFragmentViewModel
+import edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationViewModel
 
 @Module
 interface ViewModelModule {
@@ -17,6 +17,6 @@ interface ViewModelModule {
 
     @Binds
 	@IntoMap
-	@ViewModelKey(MainFragmentViewModel::class)
-	fun bindMainFragmentViewModel(mainFragmentViewModel: MainFragmentViewModel): ViewModel
+	@ViewModelKey(StartRegistrationViewModel::class)
+	fun bindMainFragmentViewModel(startRegistrationViewModel: StartRegistrationViewModel): ViewModel
 }
