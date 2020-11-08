@@ -5,9 +5,9 @@ import dagger.Provides
 import edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationViewModel
 
 @Module
-object MainFragmentModule {
+object StartRegistrationFragmentModule {
 
     @Provides
     @JvmStatic
-    fun provideMainFragmentViewModel(): StartRegistrationViewModel = StartRegistrationViewModel()
+    fun provideStartRegistrationFragmentViewModel(): StartRegistrationViewModel = StartRegistrationViewModel()
 }

@@ -1,7 +1,6 @@
 package edu.oe.nik.cyber.auth.mobile.ui.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseActivity
 
