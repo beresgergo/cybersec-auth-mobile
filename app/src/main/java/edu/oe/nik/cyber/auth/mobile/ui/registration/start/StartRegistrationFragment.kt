@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.StartRegistrationFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
@@ -25,8 +26,12 @@ class StartRegistrationFragment @Inject constructor() : BaseFragment() {
     }
 
     override fun onResume() {
-        viewModel.updateHello()
+        //viewModel.updateHello()
         viewModel.generateTotpSecret()
+
+        viewModel.registrationResult.observe(this, Observer<InitiateRegistrationResult> {state ->
+
+        })
         super.onResume()
     }
 

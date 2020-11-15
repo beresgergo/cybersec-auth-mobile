@@ -10,10 +10,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
 
 @Module
 object RetrofitModule {
-    private const val BASE_URL: String = "https://192.16.0.9:8080"
+    private const val IP_ADDRESS: String = "192.168.0.19"
+    private const val BASE_URL: String = "https://" + IP_ADDRESS + ":8080"
 
     @Provides
     @Singleton
@@ -21,7 +24,14 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideOkHttp(): OkHttpClient = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).build()
+    fun provideOkHttp(): OkHttpClient {
+        val build = OkHttpClient
+            .Builder()
+            .hostnameVerifier(HostnameVerifier { hostname, session -> hostname.startsWith(IP_ADDRESS) })
+            .addInterceptor(HttpLoggingInterceptor())
+            .build()
+        return build
+    }
 
     @Provides
     @Singleton

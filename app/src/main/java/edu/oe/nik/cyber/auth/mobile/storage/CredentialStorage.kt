@@ -13,8 +13,8 @@ class CredentialStorage @Inject constructor(
         const val JWT_KEY = "jwt"
         const val TOTP_SECRET = "totpSecret"
         const val PREFERRED_AUTH_TYPE = "preferredAuthType"
+        const val SESSION_ID = "sessionId"
     }
-
 
     var username: String
         get() = insecureSharedPreferences.getString(USERNAME, "")
@@ -28,7 +28,7 @@ class CredentialStorage @Inject constructor(
                 apply()
             }
         }
-    var jwt: String
+    var jwt: String?
         get() = insecureSharedPreferences.getString(JWT_KEY, "")
         set(value) {
             with(insecureSharedPreferences.edit()) {
@@ -54,8 +54,8 @@ class CredentialStorage @Inject constructor(
             }
         }
 
-    var preferredAuthType: PreferredAuthenticatioType
-        get() = PreferredAuthenticatioType.valueOf(insecureSharedPreferences.getString(PREFERRED_AUTH_TYPE, ""))
+    var preferredAuthType: PreferredAuthenticationType
+        get() = PreferredAuthenticationType.valueOf(insecureSharedPreferences.getString(PREFERRED_AUTH_TYPE, ""))
         set(value) {
             with(insecureSharedPreferences.edit()) {
                 putString(PREFERRED_AUTH_TYPE, value.toString())
@@ -63,6 +63,19 @@ class CredentialStorage @Inject constructor(
             }
             with(secureSharedPreferences.edit()) {
                 putString(PREFERRED_AUTH_TYPE, value.toString())
+                apply()
+            }
+        }
+
+    var sessionId: String?
+        get() = insecureSharedPreferences.getString(SESSION_ID, "")
+        set(value) {
+            with(insecureSharedPreferences.edit()) {
+                putString(SESSION_ID, value)
+                apply()
+            }
+            with(secureSharedPreferences.edit()) {
+                putString(SESSION_ID, value)
                 apply()
             }
         }
@@ -80,11 +93,11 @@ class CredentialStorage @Inject constructor(
     }
 
     fun hasStoredCredential(): Boolean {
-        return username != "" && totpSecret != "" && jwt != ""
+        return username != "" && totpSecret != ""
     }
 }
 
-enum class PreferredAuthenticatioType {
+enum class PreferredAuthenticationType {
     MFA,
     RSA,
     TOTP

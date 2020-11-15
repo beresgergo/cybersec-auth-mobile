@@ -38,44 +38,48 @@
             <RelativeLayout
                 android:id="@+id/tasksContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/tasksLL"
+                    android:id="@+id/registration_fragment_title_container"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentTop="true">
 
                     <TextView
-                        android:id="@+id/filteringLabel"
+                        android:id="@+id/registration_fragment_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/list_item_padding"
                         android:layout_marginTop="@dimen/activity_vertical_margin"
                         android:layout_marginRight="@dimen/list_item_padding"
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:text="@string/start_registration_heading"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_marginLeft="@dimen/list_item_padding"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/list_item_padding"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@={viewModel.credentialStorage.username}"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/noTasks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/noTasksMain"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@{viewModel.hello}" />
-                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="@dimen/list_item_padding"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginRight="@dimen/list_item_padding"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:text="@string/button_text_next"
+                    android:layout_alignParentBottom="true"
+                    android:onClick="@{() -> viewModel.startRegistration()}"
+                    />
             </RelativeLayout>
 
         </edu.oe.nik.cyber.auth.mobile.ScrollChildSwipeRefreshLayout>

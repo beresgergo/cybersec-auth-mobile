@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
@@ -122,7 +121,7 @@ class CredentialStorageTest {
         ).thenReturn(mockedSharedPreferencesEditor)
 
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
-        sut.preferredAuthType = PreferredAuthenticatioType.MFA
+        sut.preferredAuthType = PreferredAuthenticationType.MFA
 
         verify(mockedSharedPreferencesEditor, times(2)).putString(any(String::class.java), any(String::class.java))
         verify(mockedSharedPreferencesEditor, times(2)).apply()
@@ -132,13 +131,13 @@ class CredentialStorageTest {
 
     @Test
     fun preferredAuthTypeShouldBeRetrievedOnlyFromTheInsecureStorage() {
-        val result = PreferredAuthenticatioType.MFA.toString()
+        val result = PreferredAuthenticationType.MFA.toString()
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.PREFERRED_AUTH_TYPE), any(String::class.java)
         )).thenReturn(result)
 
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
-        assertTrue(sut.preferredAuthType == PreferredAuthenticatioType.MFA)
+        assertTrue(sut.preferredAuthType == PreferredAuthenticationType.MFA)
         verify(mockedSecureSharedPreferences, times(0))
             .getString(any(String::class.java), any(String::class.java))
     }
@@ -158,16 +157,11 @@ class CredentialStorageTest {
     @Test
     fun hasStoredCredentialShouldOnlyBeTrueIfAllFieldsHasProperValue() {
         val name = "mockedName"
-        val jwt = "mockedJWT"
         val totpSecret = "mockedTotpSecret"
 
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.USERNAME), any(String::class.java))
         ).thenReturn(name)
-
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.JWT_KEY), any(String::class.java))
-        ).thenReturn(jwt)
 
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.TOTP_SECRET), any(String::class.java))
@@ -185,10 +179,6 @@ class CredentialStorageTest {
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.USERNAME), any(String::class.java))
         ).thenReturn(name)
-
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.JWT_KEY), any(String::class.java))
-        ).thenReturn("")
 
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.TOTP_SECRET), any(String::class.java))

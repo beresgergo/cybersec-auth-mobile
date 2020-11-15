@@ -1,6 +1,6 @@
 package edu.oe.nik.cyber.auth.mobile.ui.registration.start
 
-import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.turingcomplete.kotlinonetimepassword.HmacOneTimePasswordGenerator
 import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
@@ -26,17 +26,28 @@ class StartRegistrationViewModel @Inject constructor() : ViewModel(){
     @Inject
     lateinit var totpGenerator: HmacOneTimePasswordGenerator
 
-    val hello: String = "Hello from the view model, again"
-
-    fun updateHello() {
-        Log.d("TAG", credentialStorage.jwt)
-        credentialStorage.jwt = "let's test it"
-        Log.d("TAG", credentialStorage.jwt)
-    }
-
+    val registrationResult: MutableLiveData<InitiateRegistrationResult> = MutableLiveData()
 
     fun startRegistration() {
-        val call = registrationApi.startRegistration("yolo")
+        val call = registrationApi.startRegistration(credentialStorage.username)
+        call.enqueue(object : Callback<InitiateRegistrationResponse> {
+            override fun onResponse(
+                call: Call<InitiateRegistrationResponse>,
+                response: Response<InitiateRegistrationResponse>
+            ) {
+                if (response.isSuccessful) {
+                    credentialStorage.sessionId = response.body()?.sessionId
+                    registrationResult.value = InitiateRegistrationResult.OK
+                }
+                else {
+                    registrationResult.value = InitiateRegistrationResult.USERNAME_ALREADY_REGISTERED
+                }
+            }
+            override fun onFailure(call: Call<InitiateRegistrationResponse>, t: Throwable) {
+                // network failure
+                registrationResult.value = InitiateRegistrationResult.NETWORK_FAILURE
+            }
+        })
     }
 
     fun generateTotpSecret() {
@@ -44,8 +55,14 @@ class StartRegistrationViewModel @Inject constructor() : ViewModel(){
         val bytes = ByteArray(32)
         random.nextBytes(bytes)
 
-        val codec = Base32(false);
+        val codec = Base32(true)
         credentialStorage.totpSecret = String(codec.encode(bytes))
-        Log.d("TAG", "Encoded secret: " + credentialStorage.totpSecret)
+        Timber.d( "Encoded secret: %s", credentialStorage.totpSecret)
     }
+}
+
+enum class InitiateRegistrationResult {
+    NETWORK_FAILURE,
+    OK,
+    USERNAME_ALREADY_REGISTERED
 }
