@@ -42,9 +42,7 @@ class StartRegistrationFragment @Inject constructor() : BaseFragment() {
                     InitiateRegistrationResult.USERNAME_ALREADY_REGISTERED -> {
                         start_registration_fragment_user_exist_warning.visibility = View.VISIBLE
                     }
-                    InitiateRegistrationResult.NETWORK_FAILURE -> {
-
-                    }
+                    InitiateRegistrationResult.NETWORK_FAILURE -> showNetworkAlertDialog()
                 }
             })
     }

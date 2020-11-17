@@ -1,9 +1,15 @@
 package edu.oe.nik.cyber.auth.mobile.ui.registration.totp
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
+import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitTotpTokenRequest
+import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitTotpTokenResponse
 import edu.oe.nik.cyber.auth.mobile.storage.CredentialStorage
 import org.apache.commons.codec.binary.Base32
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import java.security.SecureRandom
 import javax.inject.Inject
@@ -16,17 +22,40 @@ class SubmitTotpSecretViewModel @Inject constructor() : ViewModel(){
     @Inject
     lateinit var credentialStorage: CredentialStorage
 
-    fun generateTotpSecret() {
+    val submitTotpSecretResult: MutableLiveData<SubmitTotpSecretResult> = MutableLiveData()
+
+    fun generateTotpSecret() : String {
         val random = SecureRandom()
         val bytes = ByteArray(32)
         random.nextBytes(bytes)
 
         val codec = Base32(true)
-        credentialStorage.totpSecret = String(codec.encode(bytes))
-        Timber.d( "Encoded secret: %s", credentialStorage.totpSecret)
+        return String(codec.encode(bytes))
     }
 
     fun submitTotpSecret() {
+        val totpSecret = generateTotpSecret()
+        credentialStorage.sessionId?.let {
+            val call = registrationApi.submitTotpSecret(credentialStorage.username, SubmitTotpTokenRequest(it, totpSecret))
+            call.enqueue(object: Callback<SubmitTotpTokenResponse>{
+                override fun onResponse(
+                    call: Call<SubmitTotpTokenResponse>,
+                    response: Response<SubmitTotpTokenResponse>
+                ) {
+                    credentialStorage.totpSecret = totpSecret
+                    submitTotpSecretResult.value = SubmitTotpSecretResult.OK
+                }
 
+                override fun onFailure(call: Call<SubmitTotpTokenResponse>, t: Throwable) {
+                    submitTotpSecretResult.value = SubmitTotpSecretResult.NETWORK_FAILURE
+                }
+
+            })
+        }
     }
+}
+
+enum class SubmitTotpSecretResult {
+    NETWORK_FAILURE,
+    OK
 }

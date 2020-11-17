@@ -14,6 +14,7 @@ class CredentialStorage @Inject constructor(
         const val TOTP_SECRET = "totpSecret"
         const val PREFERRED_AUTH_TYPE = "preferredAuthType"
         const val SESSION_ID = "sessionId"
+        const val CREDENTIAL_FINALIZED = "credentialFinalized"
     }
 
     var username: String
@@ -80,6 +81,19 @@ class CredentialStorage @Inject constructor(
             }
         }
 
+    var credentialFinalized: Boolean
+        get() = insecureSharedPreferences.getBoolean(CREDENTIAL_FINALIZED, false)
+        set(value) {
+            with(insecureSharedPreferences.edit()) {
+                putBoolean(CREDENTIAL_FINALIZED, value)
+                apply()
+            }
+            with(secureSharedPreferences.edit()) {
+                putBoolean(CREDENTIAL_FINALIZED, value)
+                apply()
+            }
+        }
+
     fun clearStorage() {
         with(insecureSharedPreferences.edit()) {
             clear()
@@ -93,7 +107,7 @@ class CredentialStorage @Inject constructor(
     }
 
     fun hasStoredCredential(): Boolean {
-        return username != "" && totpSecret != ""
+        return credentialFinalized
     }
 }
 

@@ -155,34 +155,20 @@ class CredentialStorageTest {
     }
 
     @Test
-    fun hasStoredCredentialShouldOnlyBeTrueIfAllFieldsHasProperValue() {
-        val name = "mockedName"
-        val totpSecret = "mockedTotpSecret"
-
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.USERNAME), any(String::class.java))
-        ).thenReturn(name)
-
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.TOTP_SECRET), any(String::class.java))
-        ).thenReturn(totpSecret)
+    fun hasStoredCredential_shouldBeTrue_whenHasFinalizedIsTrue() {
+        `when`(mockedInsecureSharedPreferences.getBoolean(
+            eq(CredentialStorage.CREDENTIAL_FINALIZED), anyBoolean())
+        ).thenReturn(true)
 
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
         assertTrue(sut.hasStoredCredential())
     }
 
     @Test
-    fun hasStoredCredentialShouldBeFalseIfAnyFieldIsMissingValue() {
-        val name = "mockedName"
-        val totpSecret = ""
-
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.USERNAME), any(String::class.java))
-        ).thenReturn(name)
-
-        `when`(mockedInsecureSharedPreferences.getString(
-            eq(CredentialStorage.TOTP_SECRET), any(String::class.java))
-        ).thenReturn(totpSecret)
+    fun hasStoredCredential_shouldBeFalse_whenHasFinalizedIsFalse() {
+        `when`(mockedInsecureSharedPreferences.getBoolean(
+            eq(CredentialStorage.CREDENTIAL_FINALIZED), anyBoolean())
+        ).thenReturn(false)
 
         sut = CredentialStorage(mockedInsecureSharedPreferences, mockedSecureSharedPreferences)
         assertFalse(sut.hasStoredCredential())

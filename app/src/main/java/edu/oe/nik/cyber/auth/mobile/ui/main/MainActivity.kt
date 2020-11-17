@@ -26,11 +26,7 @@ class MainActivity : BaseActivity() {
 
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 
-        credentialStorage.clearStorage()
-        credentialStorage.username = "usernam12"
-        credentialStorage.jwt = "jwt"
-        credentialStorage.totpSecret = ""
-        credentialStorage.preferredAuthType = PreferredAuthenticationType.RSA
+        if (!credentialStorage.hasStoredCredential()) credentialStorage.clearStorage()
 
         setupNavGraph()
     }
