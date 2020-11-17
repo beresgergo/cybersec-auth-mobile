@@ -1,12 +1,19 @@
 <resources>
     <string name="app_name">CyberSecAuthMobile</string>
     <string name="navigation_view_header_title">CyberSec Authentication Client</string>
+
     <string name="start_registration_heading">Enter username</string>
     <string name="start_registration_username_already_exist">Username already exist, try another one</string>
+
+    <string name="registration_submit_totp_secret_heading">Submit TOTP secret</string>
+    <string name="registration_submit_totp_secret_content">By pressing next we will create a TOTP secret and will submit it to the backend.</string>
+
     <string name="login_totp_heading">Hello, login with totp</string>
+
     <string name="button_text_next">Next</string>
     <string name="generic_username">Hello %s</string>
     <string name="generic_jwt">Your JWT is %s</string>
     <string name="generic_totpSecret">Your TOTP secret is %s</string>
     <string name="generic_preferredAuthType">Your preferred authentication type is %s</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

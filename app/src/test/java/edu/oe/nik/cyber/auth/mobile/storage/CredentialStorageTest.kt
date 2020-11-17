@@ -174,7 +174,7 @@ class CredentialStorageTest {
     @Test
     fun hasStoredCredentialShouldBeFalseIfAnyFieldIsMissingValue() {
         val name = "mockedName"
-        val totpSecret = "mockedTotpSecret"
+        val totpSecret = ""
 
         `when`(mockedInsecureSharedPreferences.getString(
             eq(CredentialStorage.USERNAME), any(String::class.java))

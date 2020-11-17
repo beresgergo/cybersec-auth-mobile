@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.start_registration_fragment.*
+import androidx.navigation.fragment.findNavController
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.StartRegistrationFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
@@ -22,17 +24,29 @@ class StartRegistrationFragment @Inject constructor() : BaseFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        observeViewModel()
+
         return binding.root
     }
 
-    override fun onResume() {
-        //viewModel.updateHello()
-        viewModel.generateTotpSecret()
+    private fun observeViewModel() {
+        viewModel.registrationResult.observe(
+            viewLifecycleOwner,
+            Observer<InitiateRegistrationResult> { state ->
 
-        viewModel.registrationResult.observe(this, Observer<InitiateRegistrationResult> {state ->
+                when (state) {
+                    InitiateRegistrationResult.OK -> {
+                        val action = StartRegistrationFragmentDirections.actionStartRegistrationFragmentToSubmitTotpSecretFragment()
+                        findNavController().navigate(action)
+                    }
+                    InitiateRegistrationResult.USERNAME_ALREADY_REGISTERED -> {
+                        start_registration_fragment_user_exist_warning.visibility = View.VISIBLE
+                    }
+                    InitiateRegistrationResult.NETWORK_FAILURE -> {
 
-        })
-        super.onResume()
+                    }
+                }
+            })
     }
 
 }

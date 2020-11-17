@@ -9,6 +9,7 @@ import edu.oe.nik.cyber.auth.mobile.ViewModelFactory
 import edu.oe.nik.cyber.auth.mobile.di.qualifiers.ViewModelKey
 import edu.oe.nik.cyber.auth.mobile.ui.login.totp.TotpLoginViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationViewModel
+import edu.oe.nik.cyber.auth.mobile.ui.registration.totp.SubmitTotpSecretViewModel
 
 @Module
 interface ViewModelModule {
@@ -25,4 +26,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(TotpLoginViewModel::class)
     fun bindTotpLoginFragmentViewModel(totpLoginViewModel: TotpLoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SubmitTotpSecretViewModel::class)
+    fun bindSubmitTotpSecretViewModel(submitTotpSecretViewModel: SubmitTotpSecretViewModel): ViewModel
 }

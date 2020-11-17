@@ -16,7 +16,7 @@ import javax.net.ssl.SSLSession
 @Module
 object RetrofitModule {
     private const val IP_ADDRESS: String = "192.168.0.19"
-    private const val BASE_URL: String = "https://" + IP_ADDRESS + ":8080"
+    private const val BASE_URL: String = "https://$IP_ADDRESS:8080"
 
     @Provides
     @Singleton
@@ -27,7 +27,7 @@ object RetrofitModule {
     fun provideOkHttp(): OkHttpClient {
         val build = OkHttpClient
             .Builder()
-            .hostnameVerifier(HostnameVerifier { hostname, session -> hostname.startsWith(IP_ADDRESS) })
+            .hostnameVerifier(HostnameVerifier { hostname, _ -> hostname.startsWith(IP_ADDRESS) })
             .addInterceptor(HttpLoggingInterceptor())
             .build()
         return build

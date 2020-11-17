@@ -23,9 +23,6 @@ class StartRegistrationViewModel @Inject constructor() : ViewModel(){
     @Inject
     lateinit var credentialStorage: CredentialStorage
 
-    @Inject
-    lateinit var totpGenerator: HmacOneTimePasswordGenerator
-
     val registrationResult: MutableLiveData<InitiateRegistrationResult> = MutableLiveData()
 
     fun startRegistration() {
@@ -50,15 +47,6 @@ class StartRegistrationViewModel @Inject constructor() : ViewModel(){
         })
     }
 
-    fun generateTotpSecret() {
-        val random = SecureRandom()
-        val bytes = ByteArray(32)
-        random.nextBytes(bytes)
-
-        val codec = Base32(true)
-        credentialStorage.totpSecret = String(codec.encode(bytes))
-        Timber.d( "Encoded secret: %s", credentialStorage.totpSecret)
-    }
 }
 
 enum class InitiateRegistrationResult {

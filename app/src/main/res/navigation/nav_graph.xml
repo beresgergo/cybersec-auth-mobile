@@ -7,10 +7,20 @@
     <fragment
         android:id="@+id/startRegistrationFragment"
         android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationFragment"
-        android:label="Start Registration Fragment" />
+        android:label="Start Registration Fragment" >
+        <action
+            android:id="@+id/action_startRegistrationFragment_to_submitTotpSecretFragment"
+            app:destination="@id/submitTotpSecretFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 
     <fragment
         android:id="@+id/totpLoginFragment"
         android:name="edu.oe.nik.cyber.auth.mobile.ui.login.totp.TotpLoginFragment"
         android:label="TOTP Login Fragment" />
+    <fragment
+        android:id="@+id/submitTotpSecretFragment"
+        android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.totp.SubmitTotpSecretFragment"
+        android:label="SubmitTotpSecretFragment" />
 </navigation>
