@@ -42,7 +42,7 @@ class SubmitTotpSecretFragment @Inject constructor() : BaseFragment() {
 
                 when (state) {
                     SubmitTotpSecretResult.OK -> {
-                        Timber.d("Navigate to the next screen.")
+                        goBack()
                     }
                     SubmitTotpSecretResult.NETWORK_FAILURE -> showNetworkAlertDialog()
                 }

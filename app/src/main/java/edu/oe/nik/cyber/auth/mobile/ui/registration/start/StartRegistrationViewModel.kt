@@ -1,7 +1,7 @@
 package edu.oe.nik.cyber.auth.mobile.ui.registration.start
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.oe.nik.cyber.auth.mobile.SingleLiveData
 import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
 import edu.oe.nik.cyber.auth.mobile.network.registration.data.InitiateRegistrationResponse
 import edu.oe.nik.cyber.auth.mobile.storage.CredentialStorage
@@ -18,7 +18,7 @@ class StartRegistrationViewModel @Inject constructor() : ViewModel(){
     @Inject
     lateinit var credentialStorage: CredentialStorage
 
-    val registrationResult: MutableLiveData<InitiateRegistrationResult> = MutableLiveData()
+    val registrationResult: SingleLiveData<InitiateRegistrationResult> = SingleLiveData()
 
     fun startRegistration() {
         val call = registrationApi.startRegistration(credentialStorage.username)
@@ -29,15 +29,15 @@ class StartRegistrationViewModel @Inject constructor() : ViewModel(){
             ) {
                 if (response.isSuccessful) {
                     credentialStorage.sessionId = response.body()?.sessionId
-                    registrationResult.value = InitiateRegistrationResult.OK
+                    registrationResult.postValue(InitiateRegistrationResult.OK)
                 }
                 else {
-                    registrationResult.value = InitiateRegistrationResult.USERNAME_ALREADY_REGISTERED
+                    registrationResult.postValue(InitiateRegistrationResult.USERNAME_ALREADY_REGISTERED)
                 }
             }
             override fun onFailure(call: Call<InitiateRegistrationResponse>, t: Throwable) {
                 // network failure
-                registrationResult.value = InitiateRegistrationResult.NETWORK_FAILURE
+                registrationResult.postValue(InitiateRegistrationResult.NETWORK_FAILURE)
             }
         })
     }

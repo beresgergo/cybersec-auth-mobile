@@ -1,7 +1,7 @@
 package edu.oe.nik.cyber.auth.mobile.ui.registration.totp
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.oe.nik.cyber.auth.mobile.SingleLiveData
 import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
 import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitTotpTokenRequest
 import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitTotpTokenResponse
@@ -10,7 +10,6 @@ import org.apache.commons.codec.binary.Base32
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import timber.log.Timber
 import java.security.SecureRandom
 import javax.inject.Inject
 
@@ -22,7 +21,7 @@ class SubmitTotpSecretViewModel @Inject constructor() : ViewModel(){
     @Inject
     lateinit var credentialStorage: CredentialStorage
 
-    val submitTotpSecretResult: MutableLiveData<SubmitTotpSecretResult> = MutableLiveData()
+    val submitTotpSecretResult: SingleLiveData<SubmitTotpSecretResult> = SingleLiveData()
 
     fun generateTotpSecret() : String {
         val random = SecureRandom()
@@ -43,11 +42,11 @@ class SubmitTotpSecretViewModel @Inject constructor() : ViewModel(){
                     response: Response<SubmitTotpTokenResponse>
                 ) {
                     credentialStorage.totpSecret = totpSecret
-                    submitTotpSecretResult.value = SubmitTotpSecretResult.OK
+                    submitTotpSecretResult.postValue(SubmitTotpSecretResult.OK)
                 }
 
                 override fun onFailure(call: Call<SubmitTotpTokenResponse>, t: Throwable) {
-                    submitTotpSecretResult.value = SubmitTotpSecretResult.NETWORK_FAILURE
+                    submitTotpSecretResult.postValue(SubmitTotpSecretResult.NETWORK_FAILURE)
                 }
 
             })
