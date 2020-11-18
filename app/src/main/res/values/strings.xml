@@ -8,6 +8,11 @@
     <string name="registration_submit_totp_secret_heading">Submit TOTP secret</string>
     <string name="registration_submit_totp_secret_content">By pressing next we will create a TOTP secret and will submit it to the backend.</string>
 
+    <string name="registration_generate_rsa_heading">Generate RSA KeyPair</string>
+    <string name="registration_generate_rsa_content_1">By pressing the button below, we will generate an RSA key pair for you.</string>
+    <string name="registration_generate_rsa_content_2">Later it will be used to verify your digital signature for authentication.</string>
+    <string name="registration_generate_rsa_button_generate">Generate it!</string>
+
     <string name="login_totp_heading">Hello, login with totp</string>
 
     <string name="button_text_next">Next</string>

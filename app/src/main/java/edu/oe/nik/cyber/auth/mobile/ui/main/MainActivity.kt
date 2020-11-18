@@ -7,7 +7,6 @@ import androidx.navigation.fragment.NavHostFragment
 import edu.oe.nik.cyber.auth.mobile.BuildConfig
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.storage.CredentialStorage
-import edu.oe.nik.cyber.auth.mobile.storage.PreferredAuthenticationType
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseActivity
 import timber.log.Timber
 import javax.inject.Inject

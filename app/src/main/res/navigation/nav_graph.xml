@@ -22,5 +22,15 @@
     <fragment
         android:id="@+id/submitTotpSecretFragment"
         android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.totp.SubmitTotpSecretFragment"
-        android:label="SubmitTotpSecretFragment" />
+        android:label="SubmitTotpSecretFragment" >
+        <action
+            android:id="@+id/action_submitTotpSecretFragment_to_generateRsaKeypairFragment"
+            app:destination="@id/generateRsaKeypairFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/generateRsaKeypairFragment"
+        android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.rsa.GenerateRsaKeypairFragment"
+        android:label="GenerateRsaKeypairFragment" />
 </navigation>

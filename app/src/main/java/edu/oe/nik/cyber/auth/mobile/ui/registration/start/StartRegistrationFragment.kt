@@ -32,7 +32,7 @@ class StartRegistrationFragment @Inject constructor() : BaseFragment() {
     private fun observeViewModel() {
         viewModel.registrationResult.observe(
             viewLifecycleOwner,
-            Observer<InitiateRegistrationResult> { state ->
+            Observer { state ->
 
                 when (state) {
                     InitiateRegistrationResult.OK -> {

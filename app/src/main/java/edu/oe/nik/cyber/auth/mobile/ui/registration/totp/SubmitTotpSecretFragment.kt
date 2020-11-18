@@ -11,10 +11,6 @@ import androidx.navigation.fragment.findNavController
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.SubmitTotpSecretFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
-import edu.oe.nik.cyber.auth.mobile.ui.registration.start.InitiateRegistrationResult
-import edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationFragmentDirections
-import kotlinx.android.synthetic.main.start_registration_fragment.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class SubmitTotpSecretFragment @Inject constructor() : BaseFragment() {
@@ -38,11 +34,11 @@ class SubmitTotpSecretFragment @Inject constructor() : BaseFragment() {
     private fun observeModel() {
         viewModel.submitTotpSecretResult.observe(
             viewLifecycleOwner,
-            Observer<SubmitTotpSecretResult> { state ->
-
+            Observer { state ->
                 when (state) {
                     SubmitTotpSecretResult.OK -> {
-                        goBack()
+                        val action = SubmitTotpSecretFragmentDirections.actionSubmitTotpSecretFragmentToGenerateRsaKeypairFragment()
+                        findNavController().navigate(action)
                     }
                     SubmitTotpSecretResult.NETWORK_FAILURE -> showNetworkAlertDialog()
                 }

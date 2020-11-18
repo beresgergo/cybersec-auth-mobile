@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+        <import type="androidx.core.content.ContextCompat" />
+        <variable
+            name="viewModel"
+            type="edu.oe.nik.cyber.auth.mobile.ui.registration.rsa.GenerateRsaKeypairViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/registration_generate_rsa_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/registration_generate_rsa_fragment_title_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/registration_generate_rsa_fragment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/registration_generate_rsa_heading"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:id="@+id/registration_generate_rsa_fragment_body_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/registration_generate_rsa_content_1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/registration_generate_rsa_fragment_generate_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:text="@string/registration_generate_rsa_button_generate"
+                />
+
+            <TextView
+                android:id="@+id/registration_generate_rsa_fragment_body_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/registration_generate_rsa_content_2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/registration_generate_rsa_fragment_next_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/list_item_padding"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/list_item_padding"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:text="@string/button_text_next"
+            android:layout_alignParentBottom="true"
+            android:enabled="false"
+            android:onClick="@{() -> viewModel.submitPublicKey()}"
+            />
+    </RelativeLayout>
+</layout>
