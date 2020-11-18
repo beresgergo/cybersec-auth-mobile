@@ -8,6 +8,7 @@ import dagger.multibindings.IntoMap
 import edu.oe.nik.cyber.auth.mobile.ViewModelFactory
 import edu.oe.nik.cyber.auth.mobile.di.qualifiers.ViewModelKey
 import edu.oe.nik.cyber.auth.mobile.ui.login.totp.TotpLoginViewModel
+import edu.oe.nik.cyber.auth.mobile.ui.registration.prefauth.PreferredAuthTypeViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.registration.rsa.GenerateRsaKeypairViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.registration.totp.SubmitTotpSecretViewModel
@@ -37,4 +38,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(SubmitTotpSecretViewModel::class)
     fun bindSubmitTotpSecretViewModel(submitTotpSecretViewModel: SubmitTotpSecretViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PreferredAuthTypeViewModel::class)
+    fun bindPreferredAuthTypeViewModel(preferredAuthTypeViewModel: PreferredAuthTypeViewModel): ViewModel
 }

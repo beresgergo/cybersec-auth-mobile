@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.GenerateRsaKeypairFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
@@ -73,6 +74,17 @@ class GenerateRsaKeypairFragment @Inject constructor() : BaseFragment() {
     private fun observeModel() {
         viewModel.publicKeyGenerated.observe(viewLifecycleOwner, Observer {
             registration_generate_rsa_fragment_next_button.isEnabled = true
+        })
+
+        viewModel.submitRsaPublicKeyResult.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                SubmitPublicKeyResult.OK -> {
+                    val action = GenerateRsaKeypairFragmentDirections.actionGenerateRsaKeypairFragmentToPreferredAuthTypeFragment()
+                    findNavController().navigate(action)
+                }
+                SubmitPublicKeyResult.NETWORK_FAILURE -> showNetworkAlertDialog()
+            }
+
         })
     }
 }

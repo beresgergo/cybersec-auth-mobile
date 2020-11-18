@@ -110,9 +110,3 @@ class CredentialStorage @Inject constructor(
         return credentialFinalized
     }
 }
-
-enum class PreferredAuthenticationType {
-    MFA,
-    RSA,
-    TOTP
-}

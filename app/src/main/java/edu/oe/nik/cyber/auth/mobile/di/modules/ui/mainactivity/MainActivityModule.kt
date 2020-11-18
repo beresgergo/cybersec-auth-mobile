@@ -2,11 +2,9 @@ package edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity.fragments.GenerateRsaKeypairFragmentModule
-import edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity.fragments.StartRegistrationFragmentModule
-import edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity.fragments.SubmitTotpSecretFragmentModule
-import edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity.fragments.TotpLoginFragmentModule
+import edu.oe.nik.cyber.auth.mobile.di.modules.ui.mainactivity.fragments.*
 import edu.oe.nik.cyber.auth.mobile.ui.login.totp.TotpLoginFragment
+import edu.oe.nik.cyber.auth.mobile.ui.registration.prefauth.PreferredAuthTypeFragment
 import edu.oe.nik.cyber.auth.mobile.ui.registration.rsa.GenerateRsaKeypairFragment
 import edu.oe.nik.cyber.auth.mobile.ui.registration.start.StartRegistrationFragment
 import edu.oe.nik.cyber.auth.mobile.ui.registration.totp.SubmitTotpSecretFragment
@@ -25,4 +23,7 @@ interface MainActivityModule {
 
     @ContributesAndroidInjector(modules = [GenerateRsaKeypairFragmentModule::class])
     fun bindGenerateRsaKeypairFragmentModule(): GenerateRsaKeypairFragment
+
+    @ContributesAndroidInjector(modules = [PreferredAuthTypeFragmentModule::class])
+    fun bindPreferredAuthTypeFragmentModule(): PreferredAuthTypeFragment
 }

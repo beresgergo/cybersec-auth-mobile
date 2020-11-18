@@ -13,9 +13,13 @@
     <string name="registration_generate_rsa_content_2">Later it will be used to verify your digital signature for authentication.</string>
     <string name="registration_generate_rsa_button_generate">Generate it!</string>
 
+    <string name="registration_prefauth_heading">Choose a preferred Authentication method</string>
+    <string name="registration_prefauth_body">In order to finish your registration, please choose a preferred mode for authentication.</string>
+
     <string name="login_totp_heading">Hello, login with totp</string>
 
     <string name="button_text_next">Next</string>
+    <string name="button_text_finish">Finish</string>
     <string name="generic_username">Hello %s</string>
     <string name="generic_jwt">Your JWT is %s</string>
     <string name="generic_totpSecret">Your TOTP secret is %s</string>

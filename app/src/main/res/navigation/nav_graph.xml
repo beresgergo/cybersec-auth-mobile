@@ -32,5 +32,15 @@
     <fragment
         android:id="@+id/generateRsaKeypairFragment"
         android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.rsa.GenerateRsaKeypairFragment"
-        android:label="GenerateRsaKeypairFragment" />
+        android:label="GenerateRsaKeypairFragment" >
+        <action
+            android:id="@+id/action_generateRsaKeypairFragment_to_preferredAuthTypeFragment"
+            app:destination="@id/preferredAuthTypeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/preferredAuthTypeFragment"
+        android:name="edu.oe.nik.cyber.auth.mobile.ui.registration.prefauth.PreferredAuthTypeFragment"
+        android:label="PreferredAuthTypeFragment" />
 </navigation>
