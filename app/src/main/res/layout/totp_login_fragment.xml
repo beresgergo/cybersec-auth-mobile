@@ -10,82 +10,100 @@
             type="edu.oe.nik.cyber.auth.mobile.ui.login.totp.TotpLoginViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <RelativeLayout
+        android:id="@+id/login_totp_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <edu.oe.nik.cyber.auth.mobile.ScrollChildSwipeRefreshLayout
-            android:id="@+id/refresh_layout"
+        <LinearLayout
+            android:id="@+id/login_totp_fragment_title_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true">
 
-            <RelativeLayout
-                android:id="@+id/tasksContainer"
+            <TextView
+                android:id="@+id/login_totp_fragment_fragment_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/login_totp_fragment_heading"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-                <LinearLayout
-                    android:id="@+id/tasksLL"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/login_totp_fragment_fragment_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:text="@string/login_totp_fragment_body"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-                    <TextView
-                        android:id="@+id/filteringLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/list_item_padding"
-                        android:layout_marginTop="@dimen/activity_vertical_margin"
-                        android:layout_marginRight="@dimen/list_item_padding"
-                        android:layout_marginBottom="@dimen/activity_vertical_margin"
-                        android:gravity="center_vertical"
-                        android:text="@string/login_totp_heading"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/login_totp_fragment_totp_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="center"
+                android:text="@{@string/login_totp_code(viewModel.totpToken)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-                <LinearLayout
-                    android:id="@+id/noTasks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
+            <TextView
+                android:id="@+id/login_totp_fragment_totp_token_invalid_warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:text="@string/login_totp_fragment_totp_token_invalid_warning"
+                android:gravity="center"
+                android:textColor="#f00"
+                android:visibility="invisible"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@{@string/generic_username(viewModel.credentialStorage.username)}" />
+        </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@{@string/generic_jwt(viewModel.credentialStorage.jwt)}" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@{@string/generic_totpSecret(viewModel.credentialStorage.totpSecret)}" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_totp_refresh_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:text="@string/button_text_refresh"
+                android:onClick="@{() -> viewModel.refreshTotpCode()}"
+                />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/list_item_padding"
-                        android:text="@{@string/generic_preferredAuthType(viewModel.credentialStorage.preferredAuthType)}" />
-                </LinearLayout>
-            </RelativeLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_totp_submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="@dimen/list_item_padding"
+                android:layout_marginRight="@dimen/list_item_padding"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:text="@string/button_text_submit"
+                android:onClick="@{() -> viewModel.initiateLogin()}"
+                />
+        </LinearLayout>
 
-        </edu.oe.nik.cyber.auth.mobile.ScrollChildSwipeRefreshLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
 
 </layout>

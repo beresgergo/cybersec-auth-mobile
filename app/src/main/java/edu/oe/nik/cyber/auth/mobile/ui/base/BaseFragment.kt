@@ -34,12 +34,24 @@ abstract class BaseFragment : Fragment(), HasAndroidInjector {
 
     override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory = viewModelFactory
 
-    fun showNetworkAlertDialog(): Unit {
+    fun showNetworkAlertDialog() {
         context?.let {
             val builder = AlertDialog.Builder(it)
             with(builder) {
                 setTitle(R.string.dialog_network_error_title)
                 setMessage(R.string.dialog_network_error_text)
+
+                show()
+            }
+        }
+    }
+
+    fun showAuthSuccessDialog(){
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            with(builder) {
+                setTitle("Authentication succeeded")
+                setMessage("Authentication succeeded")
 
                 show()
             }

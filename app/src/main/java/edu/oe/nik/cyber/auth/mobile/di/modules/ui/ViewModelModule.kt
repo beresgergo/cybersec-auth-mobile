@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import edu.oe.nik.cyber.auth.mobile.ViewModelFactory
 import edu.oe.nik.cyber.auth.mobile.di.qualifiers.ViewModelKey
+import edu.oe.nik.cyber.auth.mobile.ui.authenticated.AuthenticatedViewModel
+import edu.oe.nik.cyber.auth.mobile.ui.login.rsa.RsaLoginViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.login.totp.TotpLoginViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.registration.prefauth.PreferredAuthTypeViewModel
 import edu.oe.nik.cyber.auth.mobile.ui.registration.rsa.GenerateRsaKeypairViewModel
@@ -26,11 +28,6 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(TotpLoginViewModel::class)
-    fun bindTotpLoginFragmentViewModel(totpLoginViewModel: TotpLoginViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(GenerateRsaKeypairViewModel::class)
     fun bindGenerateRsaKeypairViewModel(generateRsaKeypairViewModel: GenerateRsaKeypairViewModel): ViewModel
 
@@ -43,4 +40,19 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(PreferredAuthTypeViewModel::class)
     fun bindPreferredAuthTypeViewModel(preferredAuthTypeViewModel: PreferredAuthTypeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TotpLoginViewModel::class)
+    fun bindTotpLoginFragmentViewModel(totpLoginViewModel: TotpLoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RsaLoginViewModel::class)
+    fun bindRsaLoginViewModel(rsaLoginViewModel: RsaLoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AuthenticatedViewModel::class)
+    fun bindsAuthenticatedViewModel(authenticatedViewModel: AuthenticatedViewModel): ViewModel
 }

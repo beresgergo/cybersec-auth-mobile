@@ -16,10 +16,16 @@
     <string name="registration_prefauth_heading">Choose a preferred Authentication method</string>
     <string name="registration_prefauth_body">In order to finish your registration, please choose a preferred mode for authentication.</string>
 
-    <string name="login_totp_heading">Hello, login with totp</string>
+    <string name="login_totp_fragment_heading">Submit TOTP token</string>
+    <string name="login_totp_fragment_body">The token below is generated with the your secret. Submit it to authenticate.</string>
+    <string name="login_totp_code">Currently generated TOTP Token is %s</string>
+    <string name="login_totp_fragment_totp_token_invalid_warning">Invalid TOTP token submitted to the server.</string>
 
     <string name="button_text_next">Next</string>
+    <string name="button_text_refresh">Refresh</string>
+    <string name="button_text_submit">Next</string>
     <string name="button_text_finish">Finish</string>
+
     <string name="generic_username">Hello %s</string>
     <string name="generic_jwt">Your JWT is %s</string>
     <string name="generic_totpSecret">Your TOTP secret is %s</string>

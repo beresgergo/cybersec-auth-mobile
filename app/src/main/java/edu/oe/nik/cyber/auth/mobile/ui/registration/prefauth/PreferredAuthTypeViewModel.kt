@@ -37,6 +37,7 @@ class PreferredAuthTypeViewModel @Inject constructor() : ViewModel() {
                     response: Response<PreferredAuthTypeResponse>
                 ) {
                     credentialStorage.credentialFinalized = true
+                    credentialStorage.preferredAuthType = selection
                     finalizeRegistrationResult.postValue(FinalizeRegistrationResult.OK)
                 }
 

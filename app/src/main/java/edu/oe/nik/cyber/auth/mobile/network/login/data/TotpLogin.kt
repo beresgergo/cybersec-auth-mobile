@@ -6,5 +6,6 @@ data class TotpLoginRequest(
 )
 
 data class TotpLoginResponse(
-    val status: String
+    val status: String,
+    val message: String?
 )

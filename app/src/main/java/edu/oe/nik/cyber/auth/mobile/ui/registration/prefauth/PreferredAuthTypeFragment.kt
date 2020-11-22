@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.RegistrationPreferredAuthenticationTypeBinding
 import edu.oe.nik.cyber.auth.mobile.storage.PreferredAuthenticationType
@@ -63,7 +64,13 @@ class PreferredAuthTypeFragment @Inject constructor() : BaseFragment() {
             viewLifecycleOwner,
             Observer { state ->
                 when (state) {
-                    FinalizeRegistrationResult.OK -> {}
+                    FinalizeRegistrationResult.OK -> {
+                       val action = when (viewModel.credentialStorage.preferredAuthType) {
+                            PreferredAuthenticationType.RSA -> PreferredAuthTypeFragmentDirections.actionPreferredAuthTypeFragmentToRsaLoginFragment()
+                            else -> PreferredAuthTypeFragmentDirections.actionPreferredAuthTypeFragmentToTotpLoginFragment()
+                        }
+                        findNavController().navigate(action)
+                    }
                     FinalizeRegistrationResult.NETWORK_FAILURE -> showNetworkAlertDialog()
                 }
             }
