@@ -1,13 +1,8 @@
 package edu.oe.nik.cyber.auth.mobile.repository
 
-import androidx.lifecycle.LiveData
 import edu.oe.nik.cyber.auth.mobile.SingleLiveData
 import edu.oe.nik.cyber.auth.mobile.network.login.LoginApi
-import edu.oe.nik.cyber.auth.mobile.network.login.data.InitiateLoginResponse
-import edu.oe.nik.cyber.auth.mobile.network.login.data.TotpLoginRequest
-import edu.oe.nik.cyber.auth.mobile.network.login.data.TotpLoginResponse
-import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitTotpTokenResponse
-import edu.oe.nik.cyber.auth.mobile.ui.login.totp.SubmitTotpTokenResult
+import edu.oe.nik.cyber.auth.mobile.network.login.data.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,9 +12,11 @@ class LoginRepository @Inject constructor(
     private val loginApi: LoginApi
 ) {
 
-    val initiateLoginLiveData = SingleLiveData<InitiateLoginResponse>()
+    val initiateLoginResult = SingleLiveData<InitiateLoginResponse>()
 
-    val submitTotpTokenLiveData = SingleLiveData<TotpLoginResponse>()
+    val submitTotpTokenResult = SingleLiveData<TotpLoginResponse>()
+
+    val getJwtResult = SingleLiveData<RetrieveTokenResponse>()
 
     fun initiateLogin(username: String) {
         loginApi.initiateLogin(username).enqueue(object: Callback<InitiateLoginResponse>{
@@ -27,11 +24,11 @@ class LoginRepository @Inject constructor(
                 call: Call<InitiateLoginResponse>,
                 response: Response<InitiateLoginResponse>
             ) {
-                initiateLoginLiveData.postValue(response.body())
+                initiateLoginResult.postValue(response.body())
             }
 
             override fun onFailure(call: Call<InitiateLoginResponse>, t: Throwable) {
-                initiateLoginLiveData.postValue(InitiateLoginResponse("", "", "", NETWORK_ERROR))
+                initiateLoginResult.postValue(InitiateLoginResponse("", "", "", NETWORK_ERROR))
             }
 
         })
@@ -43,11 +40,27 @@ class LoginRepository @Inject constructor(
                 call: Call<TotpLoginResponse>,
                 response: Response<TotpLoginResponse>
             ) {
-                submitTotpTokenLiveData.postValue(response.body())
+                submitTotpTokenResult.postValue(response.body())
             }
             override fun onFailure(call: Call<TotpLoginResponse>, t: Throwable) {
-                submitTotpTokenLiveData.postValue(TotpLoginResponse("", NETWORK_ERROR))
+                submitTotpTokenResult.postValue(TotpLoginResponse("", NETWORK_ERROR))
             }
+        })
+    }
+
+    fun getJWT(sessionId: String) {
+        loginApi.retrieveToken(RetrieveTokenRequest(sessionId)).enqueue(object: Callback<RetrieveTokenResponse> {
+            override fun onResponse(
+                call: Call<RetrieveTokenResponse>,
+                response: Response<RetrieveTokenResponse>
+            ) {
+                getJwtResult.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<RetrieveTokenResponse>, t: Throwable) {
+                getJwtResult.postValue(RetrieveTokenResponse("", "", NETWORK_ERROR))
+            }
+
         })
     }
 

@@ -31,10 +31,6 @@ class TotpLoginViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var loginRepository: LoginRepository
 
-    var submitTotpTokenResult: SingleLiveData<SubmitTotpTokenResult> = SingleLiveData()
-
-    var retrieveJWTResult: SingleLiveData<RetrieveJWTResult> = SingleLiveData()
-
     var totpToken: MutableLiveData<String> = MutableLiveData()
 
     fun storeSessionId(sessionId: String) {
@@ -55,45 +51,11 @@ class TotpLoginViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getJwtToken() {
-        credentialStorage.sessionId?.let { sessionId ->
-            val call = loginApi.retrieveToken(RetrieveTokenRequest(sessionId))
-            call.enqueue(object : Callback<RetrieveTokenResponse> {
-                override fun onResponse(
-                    call: Call<RetrieveTokenResponse>,
-                    response: Response<RetrieveTokenResponse>
-                ) {
-                    response.body()?.let {
-                        when(it.status) {
-                            "OK" -> {
-                                credentialStorage.jwt = it.token
-                                retrieveJWTResult.postValue(RetrieveJWTResult.OK)
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<RetrieveTokenResponse>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-        }
+    fun storeJwt(jwt: String) {
+        credentialStorage.jwt = jwt
     }
-}
 
-enum class InitiateLoginResult {
-    OK,
-    NETWORK_FAILURE
-}
-
-enum class SubmitTotpTokenResult {
-    OK,
-    NETWORK_FAILURE,
-    INVALID_TOKEN
-}
-
-enum class RetrieveJWTResult {
-    OK,
-    NETWORK_FAILURE
+    fun getJwtToken() {
+        credentialStorage.sessionId?.let { sessionId -> loginRepository.getJWT(sessionId) }
+    }
 }

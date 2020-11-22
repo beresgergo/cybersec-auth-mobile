@@ -35,7 +35,7 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.loginRepository.initiateLoginLiveData.observe(
+        viewModel.loginRepository.initiateLoginResult.observe(
             viewLifecycleOwner, Observer {
                 when (it.message.isNullOrBlank()) {
                     true -> {
@@ -47,12 +47,10 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
             }
         )
 
-        viewModel.loginRepository.submitTotpTokenLiveData.observe(
+        viewModel.loginRepository.submitTotpTokenResult.observe(
             viewLifecycleOwner, Observer {
                 when (it.message.isNullOrBlank()) {
-                    true -> {
-                        showAuthSuccessDialog()
-                    }
+                    true -> viewModel.getJwtToken()
                     false -> {
                         if (it.message == LoginRepository.NETWORK_ERROR) {
                             showNetworkAlertDialog()
@@ -61,6 +59,18 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
                             login_totp_fragment_totp_token_invalid_warning.visibility = View.VISIBLE
                         }
                     }
+                }
+            }
+        )
+
+        viewModel.loginRepository.getJwtResult.observe(
+            viewLifecycleOwner, Observer {
+                when (it.message.isNullOrBlank()) {
+                    true -> {
+                        viewModel.storeJwt(it.token)
+                        showAuthSuccessDialog()
+                    }
+                    false -> showNetworkAlertDialog()
                 }
             }
         )

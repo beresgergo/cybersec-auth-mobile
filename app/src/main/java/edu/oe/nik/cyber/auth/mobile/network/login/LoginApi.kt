@@ -32,7 +32,7 @@ interface LoginApi {
     ): Call<SignedChallengeResponse>
 
     @Headers(NetworkConstants.CONTENT_TYPE_JSON)
-    @POST("/value/retrieveToken")
+    @POST("/login/retrieveToken")
     fun retrieveToken(
         @Body body: RetrieveTokenRequest
     ): Call<RetrieveTokenResponse>
