@@ -4,6 +4,6 @@ import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
 import javax.inject.Inject
 
 class RegistrationRepository @Inject constructor(
-    val registrationApi: RegistrationApi
+   private val registrationApi: RegistrationApi
 ) {
 }

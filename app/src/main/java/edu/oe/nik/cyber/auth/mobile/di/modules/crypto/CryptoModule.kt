@@ -9,8 +9,10 @@ import dagger.Provides
 import edu.oe.nik.cyber.auth.mobile.di.qualifiers.ApplicationContext
 import java.security.KeyPairGenerator
 import java.security.KeyStore
+import java.security.PrivateKey
 import java.security.Signature
 import java.util.*
+import javax.crypto.SecretKey
 import javax.inject.Singleton
 import javax.security.auth.x500.X500Principal
 
@@ -32,7 +34,14 @@ object CryptoModule {
 
     @Provides
     @Singleton
-    fun provideSignature(): Signature = Signature.getInstance("SHA256withRSA")
+    fun provideKeyEntry(keyStore: KeyStore): KeyStore.PrivateKeyEntry {
+        val entry = keyStore.getEntry(KEY_ALIAS, null)
+        return entry as KeyStore.PrivateKeyEntry
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignature(privateKeyEntry: KeyStore.PrivateKeyEntry): Signature = Signature.getInstance("SHA256withRSA")
 
     @Provides
     @Singleton
@@ -51,8 +60,7 @@ object CryptoModule {
             setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1) //Set of padding schemes with which the key can be used when signing/verifying
             setCertificateNotBefore(startDate.time)                         //Start of the validity period for the self-signed certificate of the generated, default Jan 1 1970
             setCertificateNotAfter(endDate.time)                            //End of the validity period for the self-signed certificate of the generated key, default Jan 1 2048
-            setUserAuthenticationRequired(true)                             //Sets whether this key is authorized to be used only if the user has been authenticated, default false
-            setUserAuthenticationValidityDurationSeconds(30)                //Duration(seconds) for which this key is authorized to be used after the user is successfully authenticated
+            setUserAuthenticationRequired(true)                            //Sets whether this key is authorized to be used only if the user has been authenticated, default false
             build()
         }
     }

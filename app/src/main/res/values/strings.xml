@@ -21,6 +21,11 @@
     <string name="login_totp_code">Currently generated TOTP Token is %s</string>
     <string name="login_totp_fragment_totp_token_invalid_warning">Invalid TOTP token submitted to the server.</string>
 
+    <string name="login_rsa_fragment_heading">Authenticate with RSA signature</string>
+    <string name="login_rsa_fragment_body">The challenge below is received from the server. Tap on next, authenticate and the challenge will be signed.</string>
+    <string name="login_rsa_fragment_challenge">The challenge is %s</string>
+    <string name="login_rsa_fragment_rsa_signature_invalid_warning">Invalid challenge signature</string>
+
     <string name="button_text_next">Next</string>
     <string name="button_text_refresh">Refresh</string>
     <string name="button_text_submit">Next</string>

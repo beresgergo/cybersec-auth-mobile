@@ -21,12 +21,6 @@ class GenerateRsaKeypairFragment @Inject constructor() : BaseFragment() {
 
     private val viewModel: GenerateRsaKeypairViewModel by viewModels()
 
-    private lateinit var executor: Executor
-
-    private lateinit var biometricPromptInfo: BiometricPrompt.PromptInfo
-
-    private lateinit var biometricPrompt: BiometricPrompt
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,16 +54,6 @@ class GenerateRsaKeypairFragment @Inject constructor() : BaseFragment() {
             biometricPrompt.authenticate(biometricPromptInfo)
         }
     }
-
-    private fun setupPromptInfo() {
-        biometricPromptInfo = with(BiometricPrompt.PromptInfo.Builder()) {
-            setTitle("Please authenticate yourself")
-            setSubtitle("Authenticate yourself with biometric credentials stored on your device.")
-            setNegativeButtonText("How about nope?")
-            build()
-        }
-    }
-
 
     private fun observeModel() {
         viewModel.publicKeyGenerated.observe(viewLifecycleOwner, Observer {

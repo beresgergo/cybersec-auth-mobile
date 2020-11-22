@@ -16,6 +16,10 @@ class LoginRepository @Inject constructor(
 
     val submitTotpTokenResult = SingleLiveData<TotpLoginResponse>()
 
+    val getLoginChallengeResult = SingleLiveData<LoginChallengeResponse>()
+
+    val submitSignedChallengeResult = SingleLiveData<SignedChallengeResponse>()
+
     val getJwtResult = SingleLiveData<RetrieveTokenResponse>()
 
     fun initiateLogin(username: String) {
@@ -45,6 +49,38 @@ class LoginRepository @Inject constructor(
             override fun onFailure(call: Call<TotpLoginResponse>, t: Throwable) {
                 submitTotpTokenResult.postValue(TotpLoginResponse("", NETWORK_ERROR))
             }
+        })
+    }
+
+    fun getLoginChallenge(sessionId: String) {
+        loginApi.getLoginChallenge(LoginChallengeRequest(sessionId)).enqueue(object: Callback<LoginChallengeResponse> {
+            override fun onResponse(
+                call: Call<LoginChallengeResponse>,
+                response: Response<LoginChallengeResponse>
+            ) {
+                getLoginChallengeResult.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<LoginChallengeResponse>, t: Throwable) {
+                getLoginChallengeResult.postValue(LoginChallengeResponse("", "", NETWORK_ERROR))
+            }
+
+        })
+    }
+
+    fun submitSignedChallenge(sessionId: String, signedChallenge: String) {
+        loginApi.submitSignedChallenge(SignedChallengeRequest(sessionId, signedChallenge)).enqueue(object: Callback<SignedChallengeResponse> {
+            override fun onResponse(
+                call: Call<SignedChallengeResponse>,
+                response: Response<SignedChallengeResponse>
+            ) {
+                submitSignedChallengeResult.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<SignedChallengeResponse>, t: Throwable) {
+                submitSignedChallengeResult.postValue(SignedChallengeResponse("", NETWORK_ERROR))
+            }
+
         })
     }
 

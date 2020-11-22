@@ -11,6 +11,7 @@ import org.apache.commons.codec.binary.Base64
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 import java.security.KeyPairGenerator
 import java.security.PublicKey
 import javax.inject.Inject
@@ -44,6 +45,7 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
     fun submitPublicKey() {
 
         credentialStorage.sessionId?.let {
+            Timber.d("FORMAT " + publicKey.format)
             val call = registrationApi.submitPublicKey(credentialStorage.username, SubmitPublicKeyRequest(
                 it,
                 Base64.encodeBase64String(publicKey.encoded)
