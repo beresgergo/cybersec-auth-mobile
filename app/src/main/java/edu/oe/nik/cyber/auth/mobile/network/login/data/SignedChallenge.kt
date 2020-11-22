@@ -6,5 +6,6 @@ data class SignedChallengeRequest(
 )
 
 data class SignedChallengeResponse(
-    val message: String
+    val status: String,
+    var message: String?
 )

@@ -8,6 +8,7 @@ import edu.oe.nik.cyber.auth.mobile.di.modules.AppModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.crypto.CryptoModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.network.RetrofitModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.otp.OTPModule
+import edu.oe.nik.cyber.auth.mobile.di.modules.repository.RepositoryModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.storage.StorageModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.ui.ActivityModule
 import edu.oe.nik.cyber.auth.mobile.di.modules.ui.ViewModelModule
@@ -22,7 +23,8 @@ import javax.inject.Singleton
     OTPModule::class,
     RetrofitModule::class,
     StorageModule::class,
-    CryptoModule::class
+    CryptoModule::class,
+    RepositoryModule::class
 ])
 interface AppComponent : AndroidInjector<CyberSecAuthApplication> {
     @Component.Builder

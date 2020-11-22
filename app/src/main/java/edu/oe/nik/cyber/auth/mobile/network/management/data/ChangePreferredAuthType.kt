@@ -6,5 +6,6 @@ data class ChangePreferredAuthTypeRequest(
 )
 
 data class ChangePreferredAuthTypeResponse(
-    val status: String
+    val status: String,
+    var message: String?
 )

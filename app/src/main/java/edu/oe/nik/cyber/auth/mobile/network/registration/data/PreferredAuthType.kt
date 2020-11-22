@@ -6,5 +6,6 @@ data class PreferredAuthTypeRequest(
 )
 
 data class PreferredAuthTypeResponse(
-    val status: String
+    val status: String,
+    var message: String?
 )

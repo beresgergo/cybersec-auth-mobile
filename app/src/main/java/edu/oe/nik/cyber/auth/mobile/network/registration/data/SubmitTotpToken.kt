@@ -6,5 +6,6 @@ data class SubmitTotpTokenRequest(
 )
 
 data class SubmitTotpTokenResponse(
-    val status: String
+    val status: String,
+    var message: String?
 )

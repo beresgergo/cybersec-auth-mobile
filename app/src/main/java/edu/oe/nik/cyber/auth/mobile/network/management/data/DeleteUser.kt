@@ -5,5 +5,6 @@ data class DeleteUserRequest(
 )
 
 data class DeleteUserResponse(
-    val status: String
+    val status: String,
+    var message: String?
 )

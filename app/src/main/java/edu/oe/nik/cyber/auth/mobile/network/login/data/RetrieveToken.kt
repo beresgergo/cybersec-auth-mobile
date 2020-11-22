@@ -6,5 +6,6 @@ data class RetrieveTokenRequest(
 
 data class RetrieveTokenResponse(
     val status: String,
-    val token: String
+    val token: String,
+    var message: String?
 )

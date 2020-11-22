@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.TotpLoginFragmentBinding
+import edu.oe.nik.cyber.auth.mobile.repository.LoginRepository
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.totp_login_fragment.*
 import javax.inject.Inject
@@ -34,21 +35,32 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.initiateLoginResult.observe(
-            viewLifecycleOwner, Observer { state ->
-                when (state) {
-                    InitiateLoginResult.OK -> viewModel.submitTotpCode()
-                    InitiateLoginResult.NETWORK_FAILURE -> showNetworkAlertDialog()
+        viewModel.loginRepository.initiateLoginLiveData.observe(
+            viewLifecycleOwner, Observer {
+                when (it.message.isNullOrBlank()) {
+                    true -> {
+                        viewModel.storeSessionId(it.sessionId)
+                        viewModel.submitTotpCode()
+                    }
+                    false -> showNetworkAlertDialog()
                 }
             }
         )
 
-        viewModel.submitTotpTokenResult.observe(
-            viewLifecycleOwner, Observer { state ->
-                when (state) {
-                    SubmitTotpTokenResult.OK -> showAuthSuccessDialog()
-                    SubmitTotpTokenResult.INVALID_TOKEN -> login_totp_fragment_totp_token_invalid_warning.visibility = View.VISIBLE
-                    SubmitTotpTokenResult.NEWORK_FAILURE -> showNetworkAlertDialog()
+        viewModel.loginRepository.submitTotpTokenLiveData.observe(
+            viewLifecycleOwner, Observer {
+                when (it.message.isNullOrBlank()) {
+                    true -> {
+                        showAuthSuccessDialog()
+                    }
+                    false -> {
+                        if (it.message == LoginRepository.NETWORK_ERROR) {
+                            showNetworkAlertDialog()
+                        }
+                        else {
+                            login_totp_fragment_totp_token_invalid_warning.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         )

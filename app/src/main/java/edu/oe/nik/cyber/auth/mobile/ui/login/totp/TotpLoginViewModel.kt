@@ -2,14 +2,16 @@ package edu.oe.nik.cyber.auth.mobile.ui.login.totp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import dev.turingcomplete.kotlinonetimepassword.TimeBasedOneTimePasswordGenerator
 import edu.oe.nik.cyber.auth.mobile.SingleLiveData
 import edu.oe.nik.cyber.auth.mobile.network.login.LoginApi
-import edu.oe.nik.cyber.auth.mobile.network.login.data.InitiateLoginResponse
-import edu.oe.nik.cyber.auth.mobile.network.login.data.TotpLoginRequest
-import edu.oe.nik.cyber.auth.mobile.network.login.data.TotpLoginResponse
+import edu.oe.nik.cyber.auth.mobile.network.login.data.*
+import edu.oe.nik.cyber.auth.mobile.repository.LoginRepository
 import edu.oe.nik.cyber.auth.mobile.storage.CredentialStorage
+import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,60 +28,57 @@ class TotpLoginViewModel @Inject constructor() : ViewModel() {
     @Inject
     lateinit var totpGenerator: TimeBasedOneTimePasswordGenerator
 
-    var initiateLoginResult: SingleLiveData<InitiateLoginResult> = SingleLiveData()
+    @Inject
+    lateinit var loginRepository: LoginRepository
 
     var submitTotpTokenResult: SingleLiveData<SubmitTotpTokenResult> = SingleLiveData()
 
+    var retrieveJWTResult: SingleLiveData<RetrieveJWTResult> = SingleLiveData()
+
     var totpToken: MutableLiveData<String> = MutableLiveData()
+
+    fun storeSessionId(sessionId: String) {
+        credentialStorage.sessionId = sessionId
+    }
 
     fun refreshTotpCode() {
          totpToken.postValue(totpGenerator.generate())
     }
 
     fun initiateLogin() {
-        val call = loginApi.initiateLogin(credentialStorage.username)
-        call.enqueue(object: Callback<InitiateLoginResponse>{
-            override fun onResponse(
-                call: Call<InitiateLoginResponse>,
-                response: Response<InitiateLoginResponse>
-            ) {
-                credentialStorage.sessionId = response.body()?.sessionId
-                initiateLoginResult.postValue(InitiateLoginResult.OK)
-            }
-
-            override fun onFailure(call: Call<InitiateLoginResponse>, t: Throwable) {
-                initiateLoginResult.postValue(InitiateLoginResult.NETWORK_FAILURE)
-            }
-
-        })
+        loginRepository.initiateLogin(credentialStorage.username)
     }
 
     fun submitTotpCode() {
         credentialStorage.sessionId?.let { sessionId ->
-            val call = loginApi.submitTotpToken(TotpLoginRequest(
-                sessionId,
-                totpGenerator.generate()
-            ))
+            loginRepository.submitTotpToken(sessionId, totpGenerator.generate())
+        }
+    }
 
-            call.enqueue(object: Callback<TotpLoginResponse> {
+    fun getJwtToken() {
+        credentialStorage.sessionId?.let { sessionId ->
+            val call = loginApi.retrieveToken(RetrieveTokenRequest(sessionId))
+            call.enqueue(object : Callback<RetrieveTokenResponse> {
                 override fun onResponse(
-                    call: Call<TotpLoginResponse>,
-                    response: Response<TotpLoginResponse>
+                    call: Call<RetrieveTokenResponse>,
+                    response: Response<RetrieveTokenResponse>
                 ) {
                     response.body()?.let {
-                        when (it.status) {
-                            "OK" -> submitTotpTokenResult.postValue(SubmitTotpTokenResult.OK)
-                            else -> submitTotpTokenResult.postValue(SubmitTotpTokenResult.INVALID_TOKEN)
+                        when(it.status) {
+                            "OK" -> {
+                                credentialStorage.jwt = it.token
+                                retrieveJWTResult.postValue(RetrieveJWTResult.OK)
+                            }
                         }
                     }
                 }
 
-                override fun onFailure(call: Call<TotpLoginResponse>, t: Throwable) {
-                    submitTotpTokenResult.postValue(SubmitTotpTokenResult.NEWORK_FAILURE)
+                override fun onFailure(call: Call<RetrieveTokenResponse>, t: Throwable) {
+                    TODO("Not yet implemented")
                 }
+
             })
         }
-
     }
 }
 
@@ -90,6 +89,11 @@ enum class InitiateLoginResult {
 
 enum class SubmitTotpTokenResult {
     OK,
-    NEWORK_FAILURE,
+    NETWORK_FAILURE,
     INVALID_TOKEN
+}
+
+enum class RetrieveJWTResult {
+    OK,
+    NETWORK_FAILURE
 }

@@ -6,5 +6,6 @@ data class SubmitPublicKeyRequest(
 )
 
 data class SubmitPublicKeyResponse(
-    val status: String
+    val status: String,
+    var message: String?
 )
