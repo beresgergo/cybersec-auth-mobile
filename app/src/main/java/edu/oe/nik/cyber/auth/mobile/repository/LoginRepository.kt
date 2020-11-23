@@ -1,6 +1,7 @@
 package edu.oe.nik.cyber.auth.mobile.repository
 
 import edu.oe.nik.cyber.auth.mobile.SingleLiveData
+import edu.oe.nik.cyber.auth.mobile.network.NetworkConstants
 import edu.oe.nik.cyber.auth.mobile.network.login.LoginApi
 import edu.oe.nik.cyber.auth.mobile.network.login.data.*
 import retrofit2.Call
@@ -32,7 +33,7 @@ class LoginRepository @Inject constructor(
             }
 
             override fun onFailure(call: Call<InitiateLoginResponse>, t: Throwable) {
-                initiateLoginResult.postValue(InitiateLoginResponse("", "", "", NETWORK_ERROR))
+                initiateLoginResult.postValue(InitiateLoginResponse("", "", "", NetworkConstants.NETWORK_ERROR))
             }
 
         })
@@ -47,7 +48,7 @@ class LoginRepository @Inject constructor(
                 submitTotpTokenResult.postValue(response.body())
             }
             override fun onFailure(call: Call<TotpLoginResponse>, t: Throwable) {
-                submitTotpTokenResult.postValue(TotpLoginResponse("", NETWORK_ERROR))
+                submitTotpTokenResult.postValue(TotpLoginResponse("", NetworkConstants.NETWORK_ERROR))
             }
         })
     }
@@ -62,7 +63,7 @@ class LoginRepository @Inject constructor(
             }
 
             override fun onFailure(call: Call<LoginChallengeResponse>, t: Throwable) {
-                getLoginChallengeResult.postValue(LoginChallengeResponse("", "", NETWORK_ERROR))
+                getLoginChallengeResult.postValue(LoginChallengeResponse("", "", NetworkConstants.NETWORK_ERROR))
             }
 
         })
@@ -78,7 +79,7 @@ class LoginRepository @Inject constructor(
             }
 
             override fun onFailure(call: Call<SignedChallengeResponse>, t: Throwable) {
-                submitSignedChallengeResult.postValue(SignedChallengeResponse("", NETWORK_ERROR))
+                submitSignedChallengeResult.postValue(SignedChallengeResponse("", NetworkConstants.NETWORK_ERROR))
             }
 
         })
@@ -94,14 +95,10 @@ class LoginRepository @Inject constructor(
             }
 
             override fun onFailure(call: Call<RetrieveTokenResponse>, t: Throwable) {
-                getJwtResult.postValue(RetrieveTokenResponse("", "", NETWORK_ERROR))
+                getJwtResult.postValue(RetrieveTokenResponse("", "", NetworkConstants.NETWORK_ERROR))
             }
 
         })
-    }
-
-    companion object {
-        const val NETWORK_ERROR = "NETWORK_ERROR"
     }
 
 }

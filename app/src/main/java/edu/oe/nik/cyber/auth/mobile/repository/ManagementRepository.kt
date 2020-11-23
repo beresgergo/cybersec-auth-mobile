@@ -1,6 +1,7 @@
 package edu.oe.nik.cyber.auth.mobile.repository
 
 import edu.oe.nik.cyber.auth.mobile.SingleLiveData
+import edu.oe.nik.cyber.auth.mobile.network.NetworkConstants
 import edu.oe.nik.cyber.auth.mobile.network.management.ManagementApi
 import edu.oe.nik.cyber.auth.mobile.network.management.data.ChangePreferredAuthTypeRequest
 import edu.oe.nik.cyber.auth.mobile.network.management.data.ChangePreferredAuthTypeResponse
@@ -30,7 +31,7 @@ class ManagementRepository @Inject constructor(
             }
 
             override fun onFailure(call: Call<DeleteUserResponse>, t: Throwable) {
-                deleteUserResult.postValue(DeleteUserResponse("", NETWORK_ERROR))
+                deleteUserResult.postValue(DeleteUserResponse("", NetworkConstants.NETWORK_ERROR))
             }
 
         })
@@ -48,13 +49,9 @@ class ManagementRepository @Inject constructor(
                 }
 
                 override fun onFailure(call: Call<ChangePreferredAuthTypeResponse>, t: Throwable) {
-                    changePreferredAuthTypeResult.postValue(ChangePreferredAuthTypeResponse("", NETWORK_ERROR))
+                    changePreferredAuthTypeResult.postValue(ChangePreferredAuthTypeResponse("", NetworkConstants.NETWORK_ERROR))
                 }
 
             })
-    }
-
-    companion object {
-        const val NETWORK_ERROR = "NETWORK_ERROR"
     }
 }
