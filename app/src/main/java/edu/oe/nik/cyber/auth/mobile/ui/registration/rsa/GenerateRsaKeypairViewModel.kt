@@ -36,6 +36,17 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
 
     private lateinit var publicKey: PublicKey
 
+    fun PublicKey.base64String(): String {
+        val prefix = "-----BEGIN PUBLIC KEY-----"
+        val postfix = "-----END PUBLIC KEY-----"
+        val newLine = "\n"
+        val pemText = Base64.encodeBase64String(encoded)
+
+        val formattedPem = pemText.chunked(64) { "$it" }.joinToString(separator = newLine)
+
+        return Base64.encodeBase64String("$prefix$newLine$formattedPem$newLine$postfix".toByteArray())
+    }
+
     fun generatePublicKey() {
         keypairGenerator.initialize(keyGenParameterSpec)
         publicKey = keypairGenerator.generateKeyPair().public
@@ -45,10 +56,10 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
     fun submitPublicKey() {
 
         credentialStorage.sessionId?.let {
-            Timber.d("FORMAT " + publicKey.format)
+            Timber.d("FORMAT %s", publicKey.base64String())
             val call = registrationApi.submitPublicKey(credentialStorage.username, SubmitPublicKeyRequest(
                 it,
-                Base64.encodeBase64String(publicKey.encoded)
+                publicKey.base64String()
             ))
 
             call.enqueue(object : Callback<SubmitPublicKeyResponse> {
