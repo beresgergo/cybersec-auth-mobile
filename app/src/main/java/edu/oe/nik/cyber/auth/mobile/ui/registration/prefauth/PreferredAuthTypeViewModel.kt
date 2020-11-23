@@ -27,8 +27,9 @@ class PreferredAuthTypeViewModel @Inject constructor() : ViewModel() {
     fun finalizeRegistration() {
         credentialStorage.sessionId?.let {
             val call = registrationApi.finalizeRegistration(credentialStorage.username, PreferredAuthTypeRequest(
-                selection.toString(),
-                it
+                it,
+                selection.toString()
+
             ))
 
             call.enqueue(object : Callback<PreferredAuthTypeResponse> {
