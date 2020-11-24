@@ -27,7 +27,11 @@ class RegistrationRepository @Inject constructor(
             call: Call<InitiateRegistrationResponse>,
             response: Response<InitiateRegistrationResponse>
          ) {
-            startRegistrationResult.postValue(response.body())
+
+            startRegistrationResult.postValue(when (response.isSuccessful) {
+               true -> response.body()
+               false -> InitiateRegistrationResponse("", "", "Username is occupied")
+            })
          }
 
          override fun onFailure(call: Call<InitiateRegistrationResponse>, t: Throwable) {

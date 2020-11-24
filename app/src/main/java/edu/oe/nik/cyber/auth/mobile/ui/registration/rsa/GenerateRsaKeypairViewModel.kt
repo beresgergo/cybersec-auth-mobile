@@ -3,15 +3,9 @@ package edu.oe.nik.cyber.auth.mobile.ui.registration.rsa
 import android.security.keystore.KeyGenParameterSpec
 import androidx.lifecycle.ViewModel
 import edu.oe.nik.cyber.auth.mobile.SingleLiveData
-import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
-import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitPublicKeyRequest
-import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitPublicKeyResponse
 import edu.oe.nik.cyber.auth.mobile.repository.RegistrationRepository
 import edu.oe.nik.cyber.auth.mobile.storage.CredentialStorage
 import org.apache.commons.codec.binary.Base64
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
 import java.security.KeyPairGenerator
 import java.security.PublicKey
