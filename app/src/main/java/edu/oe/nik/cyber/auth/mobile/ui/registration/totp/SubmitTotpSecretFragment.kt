@@ -32,15 +32,14 @@ class SubmitTotpSecretFragment @Inject constructor() : BaseFragment() {
     }
 
     private fun observeModel() {
-        viewModel.submitTotpSecretResult.observe(
-            viewLifecycleOwner,
-            Observer { state ->
-                when (state) {
-                    SubmitTotpSecretResult.OK -> {
+        viewModel.registrationRepository.submitTotpSecretResult.observe(
+            viewLifecycleOwner, Observer {
+                when (it.message.isNullOrBlank()) {
+                    true -> {
                         val action = SubmitTotpSecretFragmentDirections.actionSubmitTotpSecretFragmentToGenerateRsaKeypairFragment()
                         findNavController().navigate(action)
                     }
-                    SubmitTotpSecretResult.NETWORK_FAILURE -> showNetworkAlertDialog()
+                    false -> showNetworkAlertDialog()
                 }
             })
     }

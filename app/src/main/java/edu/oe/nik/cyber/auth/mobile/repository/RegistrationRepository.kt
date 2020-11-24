@@ -15,7 +15,7 @@ class RegistrationRepository @Inject constructor(
 ) {
    val startRegistrationResult = SingleLiveData<InitiateRegistrationResponse>()
 
-   val submitTotpTokenResult = SingleLiveData<SubmitTotpTokenResponse>()
+   val submitTotpSecretResult = SingleLiveData<SubmitTotpTokenResponse>()
 
    val submitPublicKeyResult = SingleLiveData<SubmitPublicKeyResponse>()
 
@@ -49,11 +49,11 @@ class RegistrationRepository @Inject constructor(
                call: Call<SubmitTotpTokenResponse>,
                response: Response<SubmitTotpTokenResponse>
             ) {
-               submitTotpTokenResult.postValue(response.body())
+               submitTotpSecretResult.postValue(response.body())
             }
 
             override fun onFailure(call: Call<SubmitTotpTokenResponse>, t: Throwable) {
-               submitTotpTokenResult.postValue(SubmitTotpTokenResponse("", NetworkConstants.NETWORK_ERROR))
+               submitTotpSecretResult.postValue(SubmitTotpTokenResponse("", NetworkConstants.NETWORK_ERROR))
             }
 
          })
