@@ -27,8 +27,17 @@ class MainActivity : BaseActivity() {
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 
         if (!credentialStorage.hasStoredCredential()) credentialStorage.clearStorage()
+    }
 
+
+    override fun onResume() {
         setupNavGraph()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        credentialStorage.clearSessionInfo()
+        super.onPause()
     }
 
     private fun setupNavGraph() {

@@ -26,10 +26,16 @@
     <string name="login_rsa_fragment_challenge">The challenge is %s</string>
     <string name="login_rsa_fragment_rsa_signature_invalid_warning">Invalid challenge signature</string>
 
+    <string name="authenticated_heading">Authenticated</string>
+    <string name="authenticated_body">You are successfully authenticated, please choose from the options below</string>
+
     <string name="button_text_next">Next</string>
     <string name="button_text_refresh">Refresh</string>
-    <string name="button_text_submit">Next</string>
+    <string name="button_text_submit">Submit</string>
     <string name="button_text_finish">Finish</string>
+    <string name="button_text_update">Update</string>
+    <string name="button_text_logout">Logout</string>
+    <string name="button_text_delete">Delete</string>
 
     <string name="generic_username">Hello %s</string>
     <string name="generic_jwt">Your JWT is %s</string>
@@ -40,5 +46,8 @@
     <string name="dialog_network_error_text">Ooops, please try again later.</string>
     <string name="dialog_button_ok">OK</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="biometric_prompt_title">Please authenticate yourself</string>
+    <string name="biometric_prompt_subtitle">"Authenticate yourself with biometric credentials stored on your device."</string>
+    <string name="biometric_prompt_negative_text">How about no?</string>
+
 </resources>

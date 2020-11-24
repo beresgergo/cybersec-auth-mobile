@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.RsaLoginFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.storage.PreferredAuthenticationType
@@ -93,7 +94,8 @@ class RsaLoginFragment @Inject constructor() : BaseFragment() {
                 when (it.message.isNullOrBlank()) {
                     true -> {
                         viewModel.storeJwt(it.token)
-                        showAuthSuccessDialog()
+                        val action = RsaLoginFragmentDirections.actionRsaLoginFragmentToAuthenticatedFragment()
+                        findNavController().navigate(action)
                     }
                     else -> showNetworkAlertDialog()
                 }

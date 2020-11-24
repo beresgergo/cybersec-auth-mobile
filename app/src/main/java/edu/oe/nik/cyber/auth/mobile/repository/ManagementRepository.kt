@@ -21,12 +21,13 @@ class ManagementRepository @Inject constructor(
 
     val changePreferredAuthTypeResult = SingleLiveData<ChangePreferredAuthTypeResponse>()
 
-    fun deleteUser(token: String) {
+    fun deleteUser(token: String, callback: () -> Unit) {
         managementApi.deleteUser(DeleteUserRequest(token)).enqueue(object: Callback<DeleteUserResponse>{
             override fun onResponse(
                 call: Call<DeleteUserResponse>,
                 response: Response<DeleteUserResponse>
             ) {
+                callback()
                 deleteUserResult.postValue(response.body())
             }
 
@@ -37,7 +38,7 @@ class ManagementRepository @Inject constructor(
         })
     }
 
-    fun changePreferredAuthType(token :String, preferredAuthType: PreferredAuthenticationType) {
+    fun changePreferredAuthType(token :String, preferredAuthType: PreferredAuthenticationType, callback: () -> Unit) {
         managementApi
             .changePreferredAuthType(ChangePreferredAuthTypeRequest(token, preferredAuthType.toString()))
             .enqueue(object: Callback<ChangePreferredAuthTypeResponse> {
@@ -45,6 +46,7 @@ class ManagementRepository @Inject constructor(
                     call: Call<ChangePreferredAuthTypeResponse>,
                     response: Response<ChangePreferredAuthTypeResponse>
                 ) {
+                    callback()
                     changePreferredAuthTypeResult.postValue(response.body())
                 }
 

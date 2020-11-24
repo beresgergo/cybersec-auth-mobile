@@ -109,4 +109,9 @@ class CredentialStorage @Inject constructor(
     fun hasStoredCredential(): Boolean {
         return credentialFinalized
     }
+
+    fun clearSessionInfo() {
+        sessionId = ""
+        jwt = ""
+    }
 }

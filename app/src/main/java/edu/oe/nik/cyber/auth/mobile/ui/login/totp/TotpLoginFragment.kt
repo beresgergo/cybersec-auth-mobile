@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.TotpLoginFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.network.NetworkConstants
+import edu.oe.nik.cyber.auth.mobile.storage.PreferredAuthenticationType
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.totp_login_fragment.*
 import javax.inject.Inject
@@ -50,7 +52,15 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
         viewModel.loginRepository.submitTotpTokenResult.observe(
             viewLifecycleOwner, Observer {
                 when (it.message.isNullOrBlank()) {
-                    true -> viewModel.getJwt()
+                    true -> {
+                        if (viewModel.credentialStorage.preferredAuthType == PreferredAuthenticationType.TOTP) {
+                            viewModel.getJwt()
+                        }
+                        else {
+                            val action = TotpLoginFragmentDirections.actionTotpLoginFragmentToRsaLoginFragment()
+                            findNavController().navigate(action)
+                        }
+                    }
                     false -> {
                         if (it.message == NetworkConstants.NETWORK_ERROR) {
                             showNetworkAlertDialog()
@@ -68,7 +78,8 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
                 when (it.message.isNullOrBlank()) {
                     true -> {
                         viewModel.storeJwt(it.token)
-                        showAuthSuccessDialog()
+                        val action = TotpLoginFragmentDirections.actionTotpLoginFragmentToAuthenticatedFragment()
+                        findNavController().navigate(action)
                     }
                     false -> showNetworkAlertDialog()
                 }

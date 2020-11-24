@@ -1,6 +1,7 @@
 package edu.oe.nik.cyber.auth.mobile.ui.base
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import edu.oe.nik.cyber.auth.mobile.R
+import edu.oe.nik.cyber.auth.mobile.ui.main.MainActivity
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
@@ -56,22 +58,17 @@ abstract class BaseFragment : Fragment(), HasAndroidInjector {
 
     fun setupPromptInfo() {
         biometricPromptInfo = with(BiometricPrompt.PromptInfo.Builder()) {
-            setTitle("Please authenticate yourself")
-            setSubtitle("Authenticate yourself with biometric credentials stored on your device.")
-            setNegativeButtonText("How about nope?")
+            setTitle(resources.getString(R.string.biometric_prompt_title))
+            setSubtitle(resources.getString(R.string.biometric_prompt_subtitle))
+            setNegativeButtonText(resources.getString(R.string.biometric_prompt_negative_text))
             build()
         }
     }
 
-    fun showAuthSuccessDialog(){
-        context?.let {
-            val builder = AlertDialog.Builder(it)
-            with(builder) {
-                setTitle("Authentication succeeded")
-                setMessage("Authentication succeeded")
-
-                show()
-            }
-        }
+    fun restartApp() {
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        activity?.finish()
+        startActivity(intent)
     }
 }

@@ -6,10 +6,7 @@ import edu.oe.nik.cyber.auth.mobile.network.management.data.ChangePreferredAuthT
 import edu.oe.nik.cyber.auth.mobile.network.management.data.DeleteUserRequest
 import edu.oe.nik.cyber.auth.mobile.network.management.data.DeleteUserResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ManagementApi {
 
@@ -20,7 +17,7 @@ interface ManagementApi {
     ): Call<ChangePreferredAuthTypeResponse>
 
     @Headers(NetworkConstants.CONTENT_TYPE_JSON)
-    @DELETE("/management/user")
+    @HTTP(method = "DELETE", path = "/management/user", hasBody = true)
     fun deleteUser(
         @Body body: DeleteUserRequest
     ): Call<DeleteUserResponse>
