@@ -27,7 +27,6 @@ class RegistrationRepository @Inject constructor(
             call: Call<InitiateRegistrationResponse>,
             response: Response<InitiateRegistrationResponse>
          ) {
-
             startRegistrationResult.postValue(when (response.isSuccessful) {
                true -> response.body()
                false -> InitiateRegistrationResponse("", "", "Username is occupied")

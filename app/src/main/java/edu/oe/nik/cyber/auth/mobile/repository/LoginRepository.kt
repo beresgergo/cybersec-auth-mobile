@@ -45,7 +45,10 @@ class LoginRepository @Inject constructor(
                 call: Call<TotpLoginResponse>,
                 response: Response<TotpLoginResponse>
             ) {
-                submitTotpTokenResult.postValue(response.body())
+                submitTotpTokenResult.postValue(when(response.isSuccessful) {
+                    true -> response.body()
+                    false -> TotpLoginResponse("", "Invalid token.")
+                })
             }
             override fun onFailure(call: Call<TotpLoginResponse>, t: Throwable) {
                 submitTotpTokenResult.postValue(TotpLoginResponse("", NetworkConstants.NETWORK_ERROR))
