@@ -6,6 +6,7 @@ import edu.oe.nik.cyber.auth.mobile.SingleLiveData
 import edu.oe.nik.cyber.auth.mobile.network.registration.RegistrationApi
 import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitPublicKeyRequest
 import edu.oe.nik.cyber.auth.mobile.network.registration.data.SubmitPublicKeyResponse
+import edu.oe.nik.cyber.auth.mobile.repository.RegistrationRepository
 import edu.oe.nik.cyber.auth.mobile.storage.CredentialStorage
 import org.apache.commons.codec.binary.Base64
 import retrofit2.Call
@@ -20,8 +21,6 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
 
     val publicKeyGenerated: SingleLiveData<Boolean> = SingleLiveData()
 
-    val submitRsaPublicKeyResult: SingleLiveData<SubmitPublicKeyResult> = SingleLiveData()
-
     @Inject
     lateinit var keypairGenerator: KeyPairGenerator
 
@@ -29,7 +28,7 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
     lateinit var keyGenParameterSpec: KeyGenParameterSpec
 
     @Inject
-    lateinit var registrationApi: RegistrationApi
+    lateinit var registrationRepository: RegistrationRepository
 
     @Inject
     lateinit var credentialStorage: CredentialStorage
@@ -53,24 +52,7 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
 
         credentialStorage.sessionId?.let {
             Timber.d("FORMAT %s", publicKey.base64String())
-            val call = registrationApi.submitPublicKey(credentialStorage.username, SubmitPublicKeyRequest(
-                it,
-                publicKey.base64String()
-            ))
-
-            call.enqueue(object : Callback<SubmitPublicKeyResponse> {
-                override fun onResponse(
-                    call: Call<SubmitPublicKeyResponse>,
-                    response: Response<SubmitPublicKeyResponse>
-                ) {
-                    submitRsaPublicKeyResult.postValue(SubmitPublicKeyResult.OK)
-                }
-
-                override fun onFailure(call: Call<SubmitPublicKeyResponse>, t: Throwable) {
-                    submitRsaPublicKeyResult.postValue(SubmitPublicKeyResult.NETWORK_FAILURE)
-                }
-
-            })
+            registrationRepository.submitPublicKey(credentialStorage.username, it, publicKey.base64String())
         }
     }
 
@@ -80,9 +62,4 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
         private const val PEM_POSTFIX_PUBLIC_KEY = "-----END PUBLIC KEY-----"
         private const val NEW_LINE = "\n"
     }
-}
-
-enum class SubmitPublicKeyResult {
-    NETWORK_FAILURE,
-    OK
 }

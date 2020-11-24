@@ -60,13 +60,14 @@ class GenerateRsaKeypairFragment @Inject constructor() : BaseFragment() {
             registration_generate_rsa_fragment_next_button.isEnabled = true
         })
 
-        viewModel.submitRsaPublicKeyResult.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                SubmitPublicKeyResult.OK -> {
+        viewModel.registrationRepository.submitPublicKeyResult.observe(
+            viewLifecycleOwner, Observer {
+            when (it.message.isNullOrBlank()) {
+                true -> {
                     val action = GenerateRsaKeypairFragmentDirections.actionGenerateRsaKeypairFragmentToPreferredAuthTypeFragment()
                     findNavController().navigate(action)
                 }
-                SubmitPublicKeyResult.NETWORK_FAILURE -> showNetworkAlertDialog()
+                false -> showNetworkAlertDialog()
             }
 
         })
