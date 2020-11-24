@@ -73,9 +73,7 @@ class RsaLoginFragment @Inject constructor() : BaseFragment() {
         viewModel.loginRepository.getLoginChallengeResult.observe(
             viewLifecycleOwner, Observer {
                 when (it.message.isNullOrBlank()) {
-                    true -> {
-                        viewModel.updateChallenge(it.challenge)
-                    }
+                    true -> viewModel.updateChallenge(it.challenge)
                     false -> showNetworkAlertDialog()
                 }
             }
@@ -83,7 +81,22 @@ class RsaLoginFragment @Inject constructor() : BaseFragment() {
 
         viewModel.loginRepository.submitSignedChallengeResult.observe(
             viewLifecycleOwner, Observer {
+                when (it.message.isNullOrBlank()) {
+                    true -> viewModel.getJWT()
+                    false -> login_rsa_fragment_rsa_signature_invalid_warning.visibility = View.VISIBLE
+                }
+            }
+        )
 
+        viewModel.loginRepository.getJwtResult.observe(
+            viewLifecycleOwner, Observer {
+                when (it.message.isNullOrBlank()) {
+                    true -> {
+                        viewModel.storeJwt(it.token)
+                        showAuthSuccessDialog()
+                    }
+                    else -> showNetworkAlertDialog()
+                }
             }
         )
     }

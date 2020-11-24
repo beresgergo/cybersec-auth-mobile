@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import edu.oe.nik.cyber.auth.mobile.R
 import edu.oe.nik.cyber.auth.mobile.databinding.TotpLoginFragmentBinding
 import edu.oe.nik.cyber.auth.mobile.network.NetworkConstants
-import edu.oe.nik.cyber.auth.mobile.repository.LoginRepository
 import edu.oe.nik.cyber.auth.mobile.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.totp_login_fragment.*
 import javax.inject.Inject
@@ -51,7 +50,7 @@ class TotpLoginFragment @Inject constructor() : BaseFragment() {
         viewModel.loginRepository.submitTotpTokenResult.observe(
             viewLifecycleOwner, Observer {
                 when (it.message.isNullOrBlank()) {
-                    true -> viewModel.getJwtToken()
+                    true -> viewModel.getJwt()
                     false -> {
                         if (it.message == NetworkConstants.NETWORK_ERROR) {
                             showNetworkAlertDialog()

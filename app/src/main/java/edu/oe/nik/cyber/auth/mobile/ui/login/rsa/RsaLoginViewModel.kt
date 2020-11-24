@@ -57,4 +57,10 @@ class RsaLoginViewModel @Inject constructor() : ViewModel() {
             loginRepository.submitSignedChallenge(it, signedChallenge)
         }
     }
+
+    fun storeJwt(jwt: String) = run { credentialStorage.jwt = jwt }
+
+    fun getJWT() {
+        credentialStorage.sessionId?.let { sessionId -> loginRepository.getJWT(sessionId) }
+    }
 }

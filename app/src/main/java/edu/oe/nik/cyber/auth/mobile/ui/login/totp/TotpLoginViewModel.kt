@@ -46,7 +46,7 @@ class TotpLoginViewModel @Inject constructor() : ViewModel() {
         credentialStorage.jwt = jwt
     }
 
-    fun getJwtToken() {
+    fun getJwt() {
         credentialStorage.sessionId?.let { sessionId -> loginRepository.getJWT(sessionId) }
     }
 }
