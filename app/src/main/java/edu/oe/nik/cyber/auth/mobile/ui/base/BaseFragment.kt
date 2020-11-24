@@ -31,16 +31,12 @@ abstract class BaseFragment : Fragment(), HasAndroidInjector {
 
     protected lateinit var executor: Executor
 
-    protected var navController: NavController? = null
-
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
 
     override fun androidInjector(): AndroidInjector<Any>? = androidInjector
-
-    fun goBack() = NavHostFragment.findNavController(this).popBackStack()
 
     override fun getDefaultViewModelProviderFactory(): ViewModelProvider.Factory = viewModelFactory
 

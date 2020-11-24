@@ -75,12 +75,15 @@
         android:label="AuthenticatedFragment" >
         <action
             android:id="@+id/action_authenticatedFragment_to_totpLoginFragment"
-            app:destination="@id/totpLoginFragment" />
+            app:destination="@id/totpLoginFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_authenticatedFragment_to_rsaLoginFragment"
-            app:destination="@id/rsaLoginFragment" />
+            app:destination="@id/rsaLoginFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_authenticatedFragment_to_startRegistrationFragment"
-            app:destination="@id/startRegistrationFragment" />
+            app:destination="@id/startRegistrationFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

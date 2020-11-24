@@ -60,18 +60,18 @@ class PreferredAuthTypeFragment @Inject constructor() : BaseFragment() {
     }
 
     private fun observeModel() {
-        viewModel.finalizeRegistrationResult.observe(
-            viewLifecycleOwner,
-            Observer { state ->
-                when (state) {
-                    FinalizeRegistrationResult.OK -> {
+        viewModel.registrationRepository.finalizeRegistrationResult.observe(
+            viewLifecycleOwner, Observer {
+                viewModel.persistToStorage()
+                when (it.message.isNullOrBlank()) {
+                    true -> {
                        val action = when (viewModel.credentialStorage.preferredAuthType) {
                             PreferredAuthenticationType.RSA -> PreferredAuthTypeFragmentDirections.actionPreferredAuthTypeFragmentToRsaLoginFragment()
                             else -> PreferredAuthTypeFragmentDirections.actionPreferredAuthTypeFragmentToTotpLoginFragment()
                         }
                         findNavController().navigate(action)
                     }
-                    FinalizeRegistrationResult.NETWORK_FAILURE -> showNetworkAlertDialog()
+                    false -> showNetworkAlertDialog()
                 }
             }
         )
