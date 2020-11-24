@@ -37,7 +37,6 @@ class RsaLoginViewModel @Inject constructor() : ViewModel() {
     fun retrieveChallenge() {
         credentialStorage.sessionId?.let {
             loginRepository.getLoginChallenge(it)
-            //challenge = Transformations.map(loginRepository.getLoginChallengeResult) { it.challenge }
         }
     }
 

@@ -41,7 +41,7 @@ object CryptoModule {
 
     @Provides
     @Singleton
-    fun provideSignature(privateKeyEntry: KeyStore.PrivateKeyEntry): Signature = Signature.getInstance("SHA256withRSA")
+    fun provideSignature(): Signature = Signature.getInstance("SHA256withRSA")
 
     @Provides
     @Singleton

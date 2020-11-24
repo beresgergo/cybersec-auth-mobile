@@ -37,14 +37,10 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
     private lateinit var publicKey: PublicKey
 
     fun PublicKey.base64String(): String {
-        val prefix = "-----BEGIN PUBLIC KEY-----"
-        val postfix = "-----END PUBLIC KEY-----"
-        val newLine = "\n"
         val pemText = Base64.encodeBase64String(encoded)
+        val formattedPem = pemText.chunked(PEM_LINE_LENGTH) { "$it" }.joinToString(separator = NEW_LINE)
 
-        val formattedPem = pemText.chunked(64) { "$it" }.joinToString(separator = newLine)
-
-        return Base64.encodeBase64String("$prefix$newLine$formattedPem$newLine$postfix".toByteArray())
+        return Base64.encodeBase64String("$PEM_PREFIX_PUBLIC_KEY$NEW_LINE$formattedPem$NEW_LINE$PEM_POSTFIX_PUBLIC_KEY".toByteArray())
     }
 
     fun generatePublicKey() {
@@ -76,6 +72,13 @@ class GenerateRsaKeypairViewModel @Inject constructor() : ViewModel() {
 
             })
         }
+    }
+
+    companion object {
+        private const val PEM_LINE_LENGTH = 64
+        private const val PEM_PREFIX_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----"
+        private const val PEM_POSTFIX_PUBLIC_KEY = "-----END PUBLIC KEY-----"
+        private const val NEW_LINE = "\n"
     }
 }
 
